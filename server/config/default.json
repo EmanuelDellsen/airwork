@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://emanueldellsen:general92@dit341-txmc3.mongodb.net/test?retryWrites=true&w=majority",
+  "jsonWebTokenSecret": "personalSecretWebToken"
+}
