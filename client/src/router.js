@@ -4,6 +4,7 @@ import Login from '@/views/Login'
 import Home from '@/views/Home'
 import Register from '@/views/Register'
 import Profile from '@/views/Profile'
+import EditUserProfile from '@/views/EditUserProfile'
 import Application from '@/views/Application'
 
 
@@ -37,6 +38,11 @@ const router = new Router({
       path: '/applications',
       name: 'Applications',
       component: Application
+    },
+    {
+      path: '/edituserprofile',
+      name: 'EditUserProfile',
+      component: EditUserProfile
     }
   ]
 });
