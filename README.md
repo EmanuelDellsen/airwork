@@ -1,13 +1,13 @@
 # airwork
 
-## Project setup
-```
-npm install
-```
-
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+npm run client
+```
+
+### Compiles and runs backend server side
+```
+npm run server
 ```
 
 ### Compiles and minifies for production
