@@ -1,8 +1,7 @@
 <template>
   <div id="home">
     <div class="map">
-      <h1>Here will the map be</h1>
-      <br>
+      <SearchBar />
       <Map />
     </div>
   </div>
@@ -11,10 +10,13 @@
 <script>
 
   import Map from '../components/Map.vue';
+  import SearchBar from '../components/SearchBar.vue';
+
 
   export default {
     components: {
-      Map
+      Map,
+      SearchBar
     }
   };
 </script>
