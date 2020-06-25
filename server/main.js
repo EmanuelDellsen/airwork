@@ -1,30 +1,72 @@
-//Backend based on https://bezkoder.com/node-express-mongodb-crud-rest-api/
+//Backend based on https://www.digitalocean.com/community/tutorials/nodejs-crud-operations-mongoose-mongodb-atlas
+const express = require('express');
+const mongoose = require('mongoose');
 
+const app = express();
+const port = 5000;
+
+app.use(express.json());
+
+//Get keys
+var username = process.env.MONGODB_ATLAS_USERNAME;
+var password = process.env.MONGODB_ATLAS_PASSWORD;
+var database = process.env.MONGODB_ATLAS_DATABASE_NAME;
+
+const uri = `mongodb+srv://${username}:${password}@clusterairwork-wtr11.mongodb.net/${database}?retryWrites=true&w=majority`;
+
+mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
+const connection = mongoose.connection;
+connection.once('open', () => {
+    console.log("MongoDB database connection established successfully");
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on port: ${port}`);
+});
+/*
+//Setup
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
+const mongoose = require('mongoose');
 const app = express();
-
 var corsOptions = {
   origin: "http://localhost:8081"
 };
 
+//Settings
 app.use(cors(corsOptions));
+app.use(bodyParser.json()); // parse requests of content-type - application/json
+app.use(bodyParser.urlencoded({ extended: true })); // parse requests of content-type - application/x-www-form-urlencoded
 
-// parse requests of content-type - application/json
-app.use(bodyParser.json());
+//Get keys
+var username = process.env.MONGODB_ATLAS_USERNAME;
+var password = process.env.MONGODB_ATLAS_PASSWORD;
+var database = process.env.MONGODB_ATLAS_DATABASE_NAME;
+const PORT = process.env.PORT || 8080;
 
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+//Connect to MongoDB Atlas database
+mongoose.connect(`mongodb+srv://${username}:${password}@clusterairwork-wtr11.mongodb.net/${database}?retryWrites=true&w=majority`, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true
+});
+
+//Localize connection to db
+const connection = mongoose.connection;
+
+//Listener to notify when db-connection is established
+connection.once("open", uri => {
+  console.log("MongoDB database connections established");
+});
+
+//PLACE ROUTES HERE
 
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to AirWork backend!" });
 });
 
-// set port, listen for requests
-const PORT = process.env.PORT || 8080;
+// Start server, set port
 app.listen(PORT, () => {
   console.log(`AirWork Backend-server`);
   console.log(``);
