@@ -1,7 +1,7 @@
 //Backend based on https://www.digitalocean.com/community/tutorials/nodejs-crud-operations-mongoose-mongodb-atlas
 const express = require('express');
 const mongoose = require('mongoose');
-
+require('dotenv').config();
 const app = express();
 const port = 5000;
 
