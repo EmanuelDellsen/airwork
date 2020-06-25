@@ -3,20 +3,20 @@
     <div class="map">
       <h1>Here will the map be</h1>
       <br>
-      <Map/>
+      <Map />
     </div>
   </div>
 </template>
 
 <script>
 
-import Map from "@/components/Map.vue";
+  import Map from '../components/Map.vue';
 
-export default {
-  components: {
-    Map
-  }
-};
+  export default {
+    components: {
+      Map
+    }
+  };
 </script>
 
 <style>
