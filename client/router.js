@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/views/Login'
-import Home from '@/views/Home'
-import Register from '@/views/Register'
-import Profile from '@/views/Profile'
-import EditUserProfile from '@/views/EditUserProfile'
-import Application from '@/views/Application'
+import Login from './views/Login'
+import Home from './views/Home'
+import Register from './views/Register'
+import Profile from './views/Profile'
+import EditUserProfile from './views/EditUserProfile'
+import Application from './views/Application'
 
 
 Vue.use(Router);

@@ -108,7 +108,7 @@ export default new Vuex.Store({
       state.status = 'loading';
     },
     auth_success(state, { token, user }) {
-      console.log(token, user + "inside auth success") 
+      console.log(token, user + "inside auth success")
 
       state.status = 'success';
       state.token = token;
