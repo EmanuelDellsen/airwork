@@ -1,3 +1,4 @@
+require('dotenv').config();
 //Backend based on https://www.digitalocean.com/community/tutorials/nodejs-crud-operations-mongoose-mongodb-atlas
 const express = require('express');
 const mongoose = require('mongoose');
@@ -8,20 +9,25 @@ const port = 5000;
 app.use(express.json());
 
 //Get keys
-var username = process.env.MONGODB_ATLAS_USERNAME;
-var password = process.env.MONGODB_ATLAS_PASSWORD;
-var database = process.env.MONGODB_ATLAS_DATABASE_NAME;
+const username = process.env.MONGODB_ATLAS_USERNAME;
+const password = process.env.MONGODB_ATLAS_PASSWORD;
+const database = process.env.MONGODB_ATLAS_DATABASE_NAME;
+console.log(process.env.MONGODB_ATLAS_USERNAME)
+console.log(password)
+console.log(database)
+
+
 
 const uri = `mongodb+srv://${username}:${password}@clusterairwork-wtr11.mongodb.net/${database}?retryWrites=true&w=majority`;
 
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
 const connection = mongoose.connection;
 connection.once('open', () => {
-    console.log("MongoDB database connection established successfully");
+  console.log("MongoDB database connection established successfully");
 });
 
 app.listen(port, () => {
-    console.log(`Server is running on port: ${port}`);
+  console.log(`Server is running on port: ${port}`);
 });
 /*
 //Setup
