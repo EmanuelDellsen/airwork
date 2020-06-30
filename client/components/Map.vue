@@ -2,25 +2,60 @@
   <div>
     <h1>Search bar component here?</h1>
 
-    <GmapMap :center="center" :map-type-id="mapTypeId" :zoom="8">
-      <GmapMarker v-for="(item, index) in markers" :key="index" :position="item.position"
-        @click="center = item.position" />
-    </GmapMap>
+<GmapMap ref="map" :center="{lat:10, lng:10}"
+  :zoom="7"
+  map-type-id="terrain"
+  style="width: 500px; height: 300px" @click="getClickinfo"></GmapMap>
+  <gmap-marker
+        :key="index"
+        v-for="(m, index) in markers"
+        :position="m.position"
+        @click="center=m.position"
+      ></gmap-marker>
   </div>
 </template>
 
 <script>
+
+import {gmapApi} from 'vue2-google-maps'
+
   export default {
-    data() {
-      return {
-        center: { lat: 57.708870, lng: 11.974560 },
-        mapTypeId: "terrain",
-        markers: [
-          { position: { lat: 57.359541, lng: 12.085396 } }
-        ]
-      };
+    computed: {
+      google: gmapApi
+    },
+      data(){
+        return{
+ map: null,
+      markers: [],
+      places: [],
+        }
+     
+      }
+      ,
+		methods: {
+			getClickinfo(location) {
+        this.location = location;
+        addMarker(location)
+        
+
+      },
+      addMarker(location) {
+        const marker = {
+          lat: this.location.latLng.lat(),
+          lng: this.location.latLng.lng()
+        };
+        this.markers.push({ position: marker });
+        this.places.push(this.location);
+        this.center = marker;
+      }
+		},
+		mounted() {
+			this.$refs.map.$mapPromise.then((map) => {
+      map.panTo({lat: 22.38, lng: 103.80})
+			})
     }
   };
+
 </script>
 
 <style>
