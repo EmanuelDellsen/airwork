@@ -4,12 +4,16 @@
 
     <GmapMap ref="map" :center="{lat:10, lng:10}" :zoom="7" map-type-id="terrain" style="width: 500px; height: 300px"
       @click="getClickinfo">
+      <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen"
+        @closeclick="infoWinOpen=false">
+        <button type="button" style="background-color: pink;">
+          {{this.infoContent}}
+        </button>
+        <ApplicationInfo></ApplicationInfo>
+      </gmap-info-window>
       <gmap-marker :key="key" v-for="(item, key) in markers" :position="getPosition(item)" :clickable="true"
-        @click="openApplicationInfo()" />
-      <application-info v-model="applicationInfoWindowOpen" v-bind:value="applicationInfoWindowOpen"></application-info>
-
+        @click="toggleInfoWindow(item, key)"></gmap-marker>
     </GmapMap>
-
   </div>
 </template>
 
@@ -36,12 +40,13 @@
         currentMarkerIndex: null,
         currentMarker: null,
         infoWindowPos: null,
+        infoWinOpen: false,
         applicationInfoWindowOpen: false,
         infoContent: '',
         infoOptions: {
           pixelOffset: {
-            width: 20,
-            height: 40
+            width: 0,
+            height: -35
           }
         }
 
@@ -61,32 +66,45 @@
       },
       addMarker: function () {
         let marker = {
-          lat: this.currentLocation.latLng.lat(),
-          lng: this.currentLocation.latLng.lng()
+          position: {
+            lat: this.currentLocation.latLng.lat(),
+            lng: this.currentLocation.latLng.lng()
+          },
+          markerInfo: "Here detailed info will be"
         };
         //this.markers.push({ position: marker });
         //this.places.push(this.currentLocation);
         this.markers.push(marker)
         console.log(this.markers)
-        console.log(marker.lat)
-        console.log("after this.markers")
-
       },
       getPosition: function (marker) {
-        console.log("in getposition")
-        console.log(marker)
-        console.log(marker.lat)
+
         this.currentMarker = marker;
         return {
-          lat: marker.lat,
-          lng: marker.lng
+          lat: this.currentMarker.position.lat,
+          lng: this.currentMarker.position.lng
 
         }
 
       },
-      openApplicationInfo: function () {
-        this.applicationInfoWindowOpen = !this.applicationInfoWindowOpen;
-        console.log(this.applicationInfoWindowOpen)
+      toggleInfoWindow: function (marker, idx) {
+
+        console.log(marker)
+        this.infoWindowPos = marker.position;
+        this.infoContent = marker.markerInfo;
+        console.log(this.infoWindowPos)
+
+        //check if its the same marker that was selected if yes toggle
+        if (this.currentMarkerIndex == idx) {
+          this.infoWinOpen = !this.infoWinOpen;
+        }
+        //if different marker set infowindow to open and reset current marker index
+        else {
+          this.infoWinOpen = true;
+          this.currentMarkerIndex = idx;
+
+        }
+        console.log("inside toggleinfowindow")
       }
     }
   };
