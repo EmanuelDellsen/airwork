@@ -1,5 +1,9 @@
 # airwork
 
+## setup
+- add .env files with google api to root folder
+- add .env file with mongodb atlas to server folder
+
 ### Compiles and hot-reloads for development
 ```
 npm run client
