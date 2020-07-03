@@ -1,4 +1,3 @@
-require('dotenv').config();
 //Backend based on https://www.digitalocean.com/community/tutorials/nodejs-crud-operations-mongoose-mongodb-atlas
 
 //Get all backend running serices
@@ -15,11 +14,6 @@ app.use(express.json());
 const username = process.env.MONGODB_ATLAS_USERNAME;
 const password = process.env.MONGODB_ATLAS_PASSWORD;
 const database = process.env.MONGODB_ATLAS_DATABASE_NAME;
-console.log(process.env.MONGODB_ATLAS_USERNAME)
-console.log(password)
-console.log(database)
-
-
 
 //Get uri to db
 const uri = `mongodb+srv://${username}:${password}@airwork-cluster.nnhrk.mongodb.net/${database}retryWrites=true&w=majority`;
