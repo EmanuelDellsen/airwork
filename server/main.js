@@ -1,76 +1,40 @@
-require('dotenv').config();
 //Backend based on https://www.digitalocean.com/community/tutorials/nodejs-crud-operations-mongoose-mongodb-atlas
+
+//Get all backend running serices
 const express = require('express');
 const mongoose = require('mongoose');
+
+//Set settings
 require('dotenv').config();
 const app = express();
-const port = 5000;
-
+const PORT = 5000;
 app.use(express.json());
 
 //Get keys
 const username = process.env.MONGODB_ATLAS_USERNAME;
 const password = process.env.MONGODB_ATLAS_PASSWORD;
 const database = process.env.MONGODB_ATLAS_DATABASE_NAME;
-console.log(process.env.MONGODB_ATLAS_USERNAME)
-console.log(password)
-console.log(database)
 
+//Get uri to db
+const uri = `mongodb+srv://${username}:${password}@airwork-cluster.nnhrk.mongodb.net/${database}retryWrites=true&w=majority`;
 
-
-const uri = `mongodb+srv://${username}:${password}@clusterairwork-wtr11.mongodb.net/${database}?retryWrites=true&w=majority`;
-
+//Connect to db
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
-const connection = mongoose.connection;
-connection.once('open', () => {
-  console.log("MongoDB database connection established successfully");
-});
 
-app.listen(port, () => {
-  console.log(`Server is running on port: ${port}`);
-});
-/*
-//Setup
-const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const mongoose = require('mongoose');
-const app = express();
-var corsOptions = {
-  origin: "http://localhost:8081"
-};
-
-//Settings
-app.use(cors(corsOptions));
-app.use(bodyParser.json()); // parse requests of content-type - application/json
-app.use(bodyParser.urlencoded({ extended: true })); // parse requests of content-type - application/x-www-form-urlencoded
-
-//Get keys
-var username = process.env.MONGODB_ATLAS_USERNAME;
-var password = process.env.MONGODB_ATLAS_PASSWORD;
-var database = process.env.MONGODB_ATLAS_DATABASE_NAME;
-const PORT = process.env.PORT || 8080;
-
-//Connect to MongoDB Atlas database
-mongoose.connect(`mongodb+srv://${username}:${password}@clusterairwork-wtr11.mongodb.net/${database}?retryWrites=true&w=majority`, {
-  useUnifiedTopology: true,
-  useNewUrlParser: true
-});
-
-//Localize connection to db
+//Interface db connection
 const connection = mongoose.connection;
 
 //Listener to notify when db-connection is established
-connection.once("open", uri => {
-  console.log("MongoDB database connections established");
+connection.once('open', () => {
+    console.log("MongoDB database connection established successfully");
 });
 
-//PLACE ROUTES HERE
-
-// simple route
+// Simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to AirWork backend!" });
 });
+
+//************************ PUT ROUTES HERE **************************
 
 // Start server, set port
 app.listen(PORT, () => {
@@ -79,6 +43,7 @@ app.listen(PORT, () => {
   console.log(`Express server listening on port ${PORT}.`);
   console.log(`Backend: http://localhost:${PORT}`);
 });
+
 
 /*
 var express = require('express');
