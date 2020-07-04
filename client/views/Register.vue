@@ -8,7 +8,7 @@
         <div class="card-body">
           <form @submit.prevent="registerUser">
             <div class="form-group">
-              <label for="forname">Forename</label>
+              <label for="forename">Forename</label>
               <input
                 id="forename"
                 type="text"
@@ -118,5 +118,4 @@
 .row {
   margin: 5%;
 }
-
 </style>
