@@ -9,7 +9,7 @@
         <button type="button" style="background-color: pink;">
           {{ this.infoContent }}
         </button>
-        <ApplicationInfo v-bind:marker="currentMarker"></ApplicationInfo>
+        <WorkOpportunityInformation v-bind:marker="currentMarker"></WorkOpportunityInformation>
       </gmap-info-window>
       <gmap-marker :key="key" v-for="(item, key) in markers" :position="item.position" :clickable="true"
         @click="toggleInfoWindow(item, key)"></gmap-marker>
@@ -21,7 +21,7 @@
   import { gmapApi } from "vue2-google-maps";
 
   //import GmapCustomMarker from 'vue2-gmap-custom-marker';
-  import ApplicationInfo from "./ApplicationInfo.vue";
+  import WorkOpportunityInformation from "./WorkOpportunityInformation.vue";
 
   export default {
     name: "Map",
@@ -29,7 +29,7 @@
       searchResult: Object,
     },
     components: {
-      ApplicationInfo,
+      WorkOpportunityInformation,
     },
     computed: {
       google: gmapApi,
@@ -54,7 +54,7 @@
         currentMarker: null,
         infoWindowPos: null,
         infoWinOpen: false,
-        applicationInfoWindowOpen: false,
+        workOpportunityInformation: false,
         infoContent: "",
         infoOptions: {
           pixelOffset: {
