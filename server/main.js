@@ -3,12 +3,14 @@
 //Get all backend running serices
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 //Set settings
 require("dotenv").config();
 const app = express();
 const PORT = 5000;
 app.use(express.json()); // make sure it will be in json format
+app.use(cors()); //Enable cross-origin resource sharing
 
 //Get all routes
 const workOpportunityRoute = require("./routes/workOpportunityRoute.js");

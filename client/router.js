@@ -7,7 +7,6 @@ import Profile from './views/Profile'
 import EditUserProfile from './views/EditUserProfile'
 import Application from './views/Application'
 
-
 Vue.use(Router);
 
 const router = new Router({
