@@ -44,6 +44,7 @@ app.get("/workopportunity/:id", async (req, res) => {
 app.post("/workopportunity", async (req, res) => {
   //creates new object
   const new_object = new Model(req.body);
+  console.log(req.body)
   try {
     //saves new object to db
     await new_object.save();
@@ -63,7 +64,7 @@ app.patch("/workopportunity/:id", async (req, res) => {
     req.params.id,
     req.body,
     { new: true },
-    function(err, payload) {
+    function (err, payload) {
       //check if errors occurs
       if (err) {
         //if error, return 500

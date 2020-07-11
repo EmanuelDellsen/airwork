@@ -37,6 +37,8 @@ export default {
     return this.execute("get", `/workopportunity/${id}`);
   },
   postWorkopportunity(payload) {
+    console.log("inside postWO")
+    console.log(payload)
     return this.execute("post", "/workopportunity", payload);
   },
   patchWorkopportunity(id, payload) {

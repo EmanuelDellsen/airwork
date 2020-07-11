@@ -17,8 +17,13 @@
         <input id="dateOfWork" type="date" placeholder="Date" name="date" v-model="dateOfWork" class="form-control" />
       </div>
       <div class="form-group">
-        <label for="timeOfWork">Time you will work</label>
-        <input id="timeOfWork" type="timeOfWork" placeholder="Time of work" name="timeOfWork" v-model="timeOfWork"
+        <label for="timeOfStart">Time you will start</label>
+        <input id="timeOfStart" type="timeOfStart" placeholder="Time you will start" name="timeOfStart"
+          v-model="timeOfStart" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label for="hoursOfWork">Hours of work</label>
+        <input id="hoursOfWork" type="hoursOfWork" placeholder="Hours of work" name="hoursOfWork" v-model="hoursOfWork"
           class="form-control" />
       </div>
       <div class="form-group">
@@ -33,20 +38,27 @@
         Submit
       </button>
     </form>
+
   </div>
 </template>
 
 <script>
+
+  import api from "../services/api.js";
+
   export default {
-    name: "WorkOpportunityInformation",
+    name: "CreateWorkOpportunity",
     props: {
       marker: {
         markerInfo: {
           type: String,
         },
-        position: {
+        location: {
           type: Object,
         },
+        newMarker: {
+          type: Boolean
+        }
       },
     },
     data() {
@@ -54,24 +66,31 @@
         typeOfWork: "",
         paymentAmount: "",
         dateOfWork: "",
-        timeOfWork: "",
+        timeOfStart: "",
+        hoursOfWork: "",
         workDescription: "",
-        geoPosition: {},
+        geoLocation: {},
       };
     },
 
     methods: {
-      createWorkOpportunity() {
+      createWorkOpportunity: function () {
+        console.log(this.marker)
+
         let workOpportunity = {
           typeOfWork: this.typeOfWork,
           paymentAmount: this.paymentAmount,
           dateOfWork: this.dateOfWork,
-          timeOfWork: this.timeOfWork,
+          timeOfStart: this.timeOfStart,
+          hoursOfWork: this.hoursOfWork,
           workDescription: this.workDescription,
-          geoPosition: this.marker.position,
+          geoLocation: this.marker.location,
         };
-        console.log(workOpportunity);
-        console.log(this.currentMarker);
+        console.log(workOpportunity)
+        console.log(this.marker)
+
+        api.postWorkopportunity(workOpportunity)
+
       },
     },
   };
