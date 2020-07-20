@@ -1,30 +1,48 @@
 <template>
-  <div>
     <div>
-      {{ marker.markerInfo }}
+        <div>
+            {{ marker.markerInfo }}
+        </div>
+        <div>
+            {{ marker.location }}
+        </div>
+        <div>
+            {{ marker.markerID }}
+        </div>
+        <button id="apply-button" @click="applyToWorkOpportunity">Apply</button>
     </div>
-    <div>
-      {{ marker.location }}
-    </div>
-    <button id="apply-button">Apply</button>
-  </div>
 </template>
 
 <script>
-export default {
-  name: "ExistingWorkOpportunity",
-  props: {
-    marker: {
-      markerInfo: {
-        type: String,
-      },
-      location: {
-        type: Object,
-      },
-      newMarker: {
-        type: Boolean,
-      },
-    },
-  },
-};
+    //eslint-disable-next-line
+    import api from "../services/api.js";
+
+    export default {
+        name: "ExistingWorkOpportunity",
+        props: {
+            marker: {
+                markerInfo: {
+                    type: String,
+                },
+                location: {
+                    type: Object,
+                },
+                newMarker: {
+                    type: Boolean,
+                },
+                markerID: {
+                    type: String
+                }
+            },
+        },
+        methods: {
+            //here we should patch the WO which the user wants to apply to in order to add that user to a collection of "people who have applied for this WO"
+            // in the DB, and the payload needs to be the user ID and info with what it needs to patch??
+            applyToWorkOpportunity: function () {
+                //api.patchWorkopportunity(marker.markerID, userID)
+                console.log("PATCHING PATCHING...")
+            }
+        }
+    };
+
 </script>
