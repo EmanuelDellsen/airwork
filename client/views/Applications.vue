@@ -1,30 +1,31 @@
 <template>
   <div>
     <div id="myWorkOpportunities" :key="key" v-for="(item, key) in myWorkOpportunities">
-      <div>
+      <h3>
         {{item.title}}
-      </div>
-      <div>
-        {{item.location}}
-      </div>
-      <div>
-        {{item.company}}
-      </div>
-      <div>
-        {{item.startDate}} {{item.endDate}}
-      </div>
-      <div>
-        {{item.jobTimeInHours}}
-      </div>
-      <div>
-        {{item.pay}}
-      </div>
-      <div>
-        {{item.description}}
-      </div>
-      <div>
-        {{item._id}}
-      </div>
+      </h3>
+      <p>
+        Where: {{item.location}}
+      </p>
+      <p>
+        Employer: {{item.company}}
+      </p>
+      <p>
+        When the job starts: {{item.startDate}} and ends: {{item.endDate}}
+      </p>
+      <p>
+        Duration: {{item.jobTimeInHours}} hour
+      </p>
+      <p>
+        What you recieve: {{item.payment}} SEK
+      </p>
+      <p>
+        Description: {{item.description}}
+      </p>
+      <p>
+        ID: {{item.myWorkOpportunityID}}
+      </p>
+      <button id="removeApplication" @click="unapplyFromWorkOpportunity(item.myWorkOpportunityID)">Unapply</button>
     </div>
   </div>
 </template>
@@ -65,16 +66,20 @@
           let startDateYear = startDate.getFullYear()
           let startDateMonth = startDate.getMonth() + 1
           let startDateDay = startDate.getDay()
-          startDate = startDateYear + '/' + startDateMonth + '/' + startDateDay
+          let startDateHour = startDate.getHours()
+          let startDateMinutes = ('0' + startDate.getMinutes()).slice(-2);
+          startDate = startDateYear + '/' + startDateMonth + '/' + startDateDay + ' ' + startDateHour + ':' + startDateMinutes
 
           // only keep the year, month and day from date object
           let endDateYear = endDate.getFullYear()
           let endDateMonth = endDate.getMonth() + 1
           let endDateDay = endDate.getDay()
-          endDate = endDateYear + '/' + endDateMonth + '/' + endDateDay
+          let endDateHour = endDate.getHours()
+          let endDateMinutes = ('0' + endDate.getMinutes()).slice(-2);
+          endDate = endDateYear + '/' + endDateMonth + '/' + endDateDay + ' ' + endDateHour + ':' + endDateMinutes
 
           console.log(startDate, endDate, jobTimeInHours)
-          let myApplication = {
+          let myWorkOpportunity = {
             title: dataList[i].title,
             location: dataList[i].coordinates,
             company: dataList[i].company,
@@ -83,9 +88,9 @@
             jobTimeInHours: jobTimeInHours,
             payment: dataList[i].pay,
             description: dataList[i].description,
-            myApplicationID: dataList[i]._id
+            myWorkOpportunityID: dataList[i]._id
           }
-          this.myWorkOpportunities.push(myApplication)
+          this.myWorkOpportunities.push(myWorkOpportunity)
 
         }
         console.log(this.myWorkOpportunities)
@@ -94,7 +99,24 @@
       displayWorkOpportunities: function () {
 
 
+      },
+      unapplyFromWorkOpportunity: function (workOpportunityID) {
+        console.log(workOpportunityID)
       }
     },
   };
 </script>
+
+<style>
+  #myWorkOpportunities {
+    padding: 1em;
+    border-style: solid;
+    border-width: 2px;
+    margin: 1em
+  }
+
+  #removeApplication {
+    background-color: red;
+
+  }
+</style>

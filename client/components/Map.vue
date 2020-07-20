@@ -1,7 +1,7 @@
 <template>
   <div id="wrapper">
-    <GmapMap id="map" ref="map" :center="this.center" :zoom="11" map-type-id="terrain"
-      style="width: 500px; height: 300px" @click="getClickinfo" :options="mapOptions">
+    <GmapMap id="map" ref="map" :center="this.center" :zoom="11" map-type-id="terrain" style="position:relative"
+      @click="getClickinfo" :options="mapOptions">
       <gmap-marker :key="key" v-for="(item, key) in markers" :position="item.location" :clickable="true"
         @click="toggleInfoWindow(item, key)"></gmap-marker>
       <gmap-info-window id="info_window" :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen"
