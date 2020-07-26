@@ -15,12 +15,12 @@ const schema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  location: {
-    lat: {
+  coordinates: {
+    lng: {
       type: Number,
       required: true,
     },
-    lng: {
+    lat: {
       type: Number,
       required: true,
     },

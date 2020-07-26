@@ -47,7 +47,6 @@ const connection = mongoose.connection;
 //Listener to notify when db-connection is established
 connection.on("error", function() {
   //triggered when an error is found
-  //console.error.bind(console,`- Status: Failed to connected to MongoDB! @ ${new Date().toString()}`)
   console.log("- Status: Failed to connect to MongoDB!");
   console.log(`  @ ${new Date().toString()}`);
 

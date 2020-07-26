@@ -4,16 +4,31 @@ const app = express();
 
 //get all
 app.get("/workopportunity", async (req, res) => {
-  //search for all documents of model
-  const payload = await Model.find({});
+
+  //initalize param obj, null if not used
+  var obj = {};
+
+  //check if there are params
+  if (req.query[0] !== undefined) {
+    //setup params
+    var params = req.query[0];
+    obj = JSON.parse(params);
+  }
+
+  //setup query
+  const query = Model.find(obj);
+
+  //execute query, return to docs variable
+  const docs = await query;
+
   try {
     //check if found any document
-    if (payload == null) {
+    if (docs.length == 0) {
       //if not found any document, return 404
       res.status(404).json();
     } else {
       //if found 1-* document, return all documents
-      res.send(payload);
+      res.send(docs);
     }
   } catch (err) {
     //if error, return 500
@@ -24,15 +39,15 @@ app.get("/workopportunity", async (req, res) => {
 //get one
 app.get("/workopportunity/:id", async (req, res) => {
   //searchs for document in db by id
-  const payload = await Model.findById(req.params.id);
+  const doc = await Model.findById(req.params.id);
   try {
     //check if found any document
-    if (payload == null) {
+    if (docs.length == 0) {
       //if no document found, return 404
       res.status(404).json();
     } else {
       //if document found, return document
-      res.send(payload);
+      res.send(doc);
     }
   } catch (err) {
     //if error, return 500
@@ -63,19 +78,19 @@ app.patch("/workopportunity/:id", async (req, res) => {
     req.params.id,
     req.body,
     { new: true },
-    function(err, payload) {
+    function(err, doc) {
       //check if errors occurs
       if (err) {
         //if error, return 500
         res.status(500).send(err);
       } else {
         //check if payload has content
-        if (payload == null) {
+        if (docs.length == 0) {
           //if payload is empty, return 404
           res.status(404).json();
         } else {
           //if document is found and updated, return document
-          res.send(payload);
+          res.send(doc);
         }
       }
     }
