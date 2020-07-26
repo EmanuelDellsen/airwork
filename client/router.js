@@ -5,7 +5,7 @@ import Home from './views/Home'
 import Register from './views/Register'
 import Profile from './views/Profile'
 import EditUserProfile from './views/EditUserProfile'
-import Application from './views/Application'
+import Applications from './views/Applications'
 
 Vue.use(Router);
 
@@ -36,7 +36,7 @@ const router = new Router({
     {
       path: '/applications',
       name: 'Applications',
-      component: Application
+      component: Applications
     },
     {
       path: '/edituserprofile',

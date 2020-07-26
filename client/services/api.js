@@ -42,7 +42,7 @@ export default {
     return this.execute("get", `/workopportunity/${id}`, null, null);
   },
   postWorkopportunity(payload) {
-    return this.execute("post", "/workopportunity", payload), null, null;
+    return this.execute("post", "/workopportunity", payload, null, null);
   },
   patchWorkopportunity(id, payload) {
     return this.execute("put", `/workopportunity/${id}`, payload, null, null);

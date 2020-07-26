@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="inner">
-      <Navbar />
+      <Navbar id="navbar" />
     </div>
   </div>
 </template>
@@ -19,5 +19,7 @@
 </script>
 
 <style>
-
+  #navbar {
+    padding: 1em
+  }
 </style>

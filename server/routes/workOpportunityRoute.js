@@ -42,7 +42,7 @@ app.get("/workopportunity/:id", async (req, res) => {
   const doc = await Model.findById(req.params.id);
   try {
     //check if found any document
-    if (docs.length == 0) {
+    if (doc.length == 0) {
       //if no document found, return 404
       res.status(404).json();
     } else {
@@ -85,7 +85,7 @@ app.patch("/workopportunity/:id", async (req, res) => {
         res.status(500).send(err);
       } else {
         //check if payload has content
-        if (docs.length == 0) {
+        if (doc.length == 0) {
           //if payload is empty, return 404
           res.status(404).json();
         } else {
