@@ -78,7 +78,7 @@ app.patch("/workopportunity/:id", async (req, res) => {
     req.params.id,
     req.body,
     { new: true },
-    function(err, doc) {
+    function (err, doc) {
       //check if errors occurs
       if (err) {
         //if error, return 500
