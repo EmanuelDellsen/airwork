@@ -15,27 +15,27 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-const handlebarOptions = {
-    viewEngine: {
-        extName: '.handlebars',
-        partialsDir: 'email_templates/patials',
-        layoutsDir: 'email_templates/layouts',
-        defaultLayout: '',
-    },
-    viewPath: 'email_templates',
-    extName: '.handlebars',
-};
+module.exports = {
+    mailOptions: function (sender, receiver, subject, text) {
 
-transporter.use('compile', hbs(handlebarOptions));
-
-
-
-exports.welcomeMail = (email, name) => transporter.sendMail({
-    from: 'Vue Mailer',
-    to: email,
-    subject: "Account Creation",
-    template: "welcome",
-    context: {
-        user: name
+        const emailOptions = {
+            from: sender,
+            to: receiver,
+            subject: subject,
+            text: text
+        };
+        return emailOptions;
     }
-});
+    ,
+
+    newApplicantEmail: function (emailOptions) {
+        transporter.sendMail(emailOptions, (error, response) => {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log(emailOptions)
+                console.log("successfully sent email")
+            }
+        });
+    },
+};
