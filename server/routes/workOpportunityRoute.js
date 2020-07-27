@@ -1,6 +1,8 @@
 const express = require("express");
 const Model = require("../models/WorkOpportunityModel");
 const app = express();
+let mailer = require("./mailerRoute");
+
 
 //get all
 app.get("/workopportunity", async (req, res) => {
