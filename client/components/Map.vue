@@ -6,9 +6,8 @@
         @click="toggleInfoWindow(item, key)"></gmap-marker>
       <gmap-info-window id="info_window" :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen"
         @closeclick="infoWinOpen = false">
-        <button type="button" style="background-color: pink;">
-          {{ this.infoContent }}
-        </button>
+
+
         <CreateWorkOpportunity v-if="currentMarker !== null && currentMarker.newMarker" v-bind:marker="currentMarker">
         </CreateWorkOpportunity>
         <ExistingWorkOpportunity v-else v-bind:marker="currentMarker"></ExistingWorkOpportunity>
