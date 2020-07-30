@@ -13,6 +13,7 @@ app.use(express.json()); // make sure it will be in json format
 app.use(cors()); //Enable cross-origin resource sharing
 
 //Get all routes
+const authRoute = require("./routes/authRoute.js");
 const workOpportunityRoute = require("./routes/workOpportunityRoute.js");
 
 //Get keys
@@ -82,6 +83,7 @@ app.get("/", (req, res) => {
 });
 
 //All routes in use
+app.use(authRoute);
 app.use(workOpportunityRoute);
 
 // Catch all non-error handler for api (i.e., 404 Not Found)

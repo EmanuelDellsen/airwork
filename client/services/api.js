@@ -29,14 +29,16 @@ export default {
 
   //Calls from client to server
   getAllWorkopportunity() {
-    return this.execute("get", `/workopportunity`);
+    return this.execute("get", `/workopportunity`, null, null);
   },
   getAllWorkopportunity_withinLocation(box) {
     //construct parameters
-    var params = { coordinates: { $geoWithin: { $box: [box.point1, box.point2] } } };
+    var params = {
+      coordinates: { $geoWithin: { $box: [box.point1, box.point2] } },
+    };
     //stringify required for proper format
-    var string = JSON.stringify(params)
-    return this.execute("get", `/workopportunity`, null, string);
+    var params_stringified = JSON.stringify(params);
+    return this.execute("get", `/workopportunity`, null, params_stringified);
   },
   getWorkopportunity(id) {
     return this.execute("get", `/workopportunity/${id}`, null, null);
@@ -47,4 +49,7 @@ export default {
   patchWorkopportunity(id, payload) {
     return this.execute("put", `/workopportunity/${id}`, payload, null, null);
   },
-};
+  getUserInfo(access_token){
+    return this.execute("get",`/auth/userinfo/${access_token}`,null,null,null)
+  }
+}

@@ -11,6 +11,30 @@ import * as VueGoogleMaps from "vue2-google-maps"
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
+import VueAxios from 'vue-axios'
+import VueAuthenticate from 'vue-authenticate'
+import axios from 'axios';
+
+Vue.use(VueAxios, axios)
+Vue.use(VueAuthenticate, {
+  baseUrl: 'http://localhost:5000', // Your API domain
+  
+  providers: {
+    github: {
+      clientId: '',
+      redirectUri: 'http://localhost:8080/auth/callback' // Your client app URL
+    },
+    facebook: {
+      clientId: '',
+      redirectUri: 'http://localhost:8080/auth/callback' // Your client app URL
+    },
+    google: {
+      clientId: '959050314740-tp2715mje7rqf8urc8vgcteruf74ok99.apps.googleusercontent.com',
+      redirectUri: 'http://localhost:8080/auth/callback' // Your client app URL
+    }
+  }
+})
+
 Vue.config.productionTip = false
 Vue.use(BootstrapVue);
 Vue.use(VueGoogleMaps, {
