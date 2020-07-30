@@ -1,40 +1,43 @@
 <template>
   <div class="card-body">
-    <div>{{ marker }}</div>
     <form @submit.prevent="createWorkOpportunity">
+      <h3 id="info-window-title">Create a work opportunity</h3>
+
       <div class="form-group">
         <label for="typeOfWork">Type of work</label>
         <input id="typeOfWork" type="text" placeholder="What type of work is this?" name="typeOfWork"
-          v-model="typeOfWork" class="form-control" />
+          v-model="typeOfWork" class="form-control" required>
       </div>
       <div class="form-group">
         <label for="paymentAmount">Payment in SEK</label>
         <input id="paymentAmount" type="number" placeholder="Payment in SEK" name="paymentAmount"
-          v-model="paymentAmount" class="form-control" />
+          v-model="paymentAmount" class="form-control" required>
       </div>
       <div class="form-group">
         <label for="dateOfWork">Date</label>
-        <input id="dateOfWork" type="date" placeholder="Date" name="date" v-model="dateOfWork" class="form-control" />
+        <input id="dateOfWork" type="date" placeholder="Date" name="date" v-model="dateOfWork" class="form-control"
+          required>
       </div>
       <div class="form-group">
         <label for="timeOfStart">Time you will start</label>
         <input id="timeOfStart" type="timeOfStart" placeholder="Time you will start" name="timeOfStart"
-          v-model="timeOfStart" class="form-control" />
+          v-model="timeOfStart" class="form-control" required>
       </div>
       <div class="form-group">
         <label for="hoursOfWork">Hours of work</label>
         <input id="hoursOfWork" type="hoursOfWork" placeholder="Hours of work" name="hoursOfWork" v-model="hoursOfWork"
-          class="form-control" />
+          class="form-control" required>
       </div>
       <div class="form-group">
         <label for="workDescription">Work description</label>
         <input id="workDescription" type="text" placeholder="Work description" name="workDescription"
-          v-model="workDescription" class="form-control" />
+          v-model="workDescription" class="form-control" required>
       </div>
+
 
       <!--- default value of button without type will be a submit button
                preferably specify what kind of button it is -->
-      <button type="submit" class="btn btn-secondary">
+      <button id="submit-btn" type="submit" class="btn btn-secondary">
         Submit
       </button>
     </form>
@@ -95,3 +98,21 @@
     },
   };
 </script>
+
+<style>
+  .wrapper {
+    overflow: hidden;
+  }
+
+  .form-group {
+    float: left;
+    margin: 1em
+  }
+
+  #submit-btn {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin: 1em
+  }
+</style>

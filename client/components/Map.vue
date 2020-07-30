@@ -6,9 +6,8 @@
         @click="toggleInfoWindow(item, key)"></gmap-marker>
       <gmap-info-window id="info_window" :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen"
         @closeclick="infoWinOpen = false">
-        <button type="button" style="background-color: pink;">
-          {{ this.infoContent }}
-        </button>
+
+
         <CreateWorkOpportunity v-if="currentMarker !== null && currentMarker.newMarker" v-bind:marker="currentMarker">
         </CreateWorkOpportunity>
         <ExistingWorkOpportunity v-else v-bind:marker="currentMarker"></ExistingWorkOpportunity>
@@ -107,20 +106,30 @@
         let southWest = bounds.getSouthWest();
         let northEast = bounds.getNorthEast();
         // will be used to query the correct workopportunities to then be plotted on the map within these boundaries
-        let fromLat = southWest.lat();
-        let toLat = northEast.lat();
-        let fromLng = southWest.lng();
-        let toLng = northEast.lng();
+        let southWestLng = southWest.lng();
+        let southWestLat = southWest.lat();
+        let northEastLat = northEast.lat();
+        let northEastLng = northEast.lng();
         // this "box" will be used as parameters to get the WO's that is located where the user is
-        let boundingBox = [
-          [fromLat, toLat],
-          [fromLng, toLng],
-        ];
 
-        this.markersWithinBoundary = await api.getAllWorkopportunity();
-        console.log(this.markersWithinBoundary);
-        console.log(boundingBox);
-        this.updateWorkOpportunities();
+        var boundingBox = {
+          point1: [southWestLng, southWestLat],
+          point2: [northEastLng, northEastLat]
+        }
+        try {
+          this.markersWithinBoundary = await api.getAllWorkopportunity_withinLocation(boundingBox);
+          console.log(this.markersWithinBoundary);
+          console.log(boundingBox);
+          this.updateWorkOpportunities();
+
+        } catch (error) {
+          //add more error reponse checks and provide user with correct toast/message
+          if (error.response.status === 404) {
+            console.log("no WOs found")
+          }
+        }
+
+
       },
       updateWorkOpportunities: function () {
         for (let i = 0; i < this.markers.length; i++) {
@@ -200,6 +209,7 @@
         let currentLng = this.currentLocation.geometry.location.lng();
         this.$refs.map.$mapPromise.then((map) => {
           map.panTo({ lat: currentLat, lng: currentLng });
+          map.setZoom(15)
         });
       },
       // write method to load all workopportunities where the map

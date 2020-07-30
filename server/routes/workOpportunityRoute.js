@@ -1,6 +1,10 @@
 const express = require("express");
 const Model = require("../models/WorkOpportunityModel");
 const app = express();
+const mailer = require("./mailerRoute");
+const mailOptions = mailer.mailOptions;
+const newApplicantEmail = mailer.newApplicantEmail;
+
 
 //get all
 app.get("/workopportunity", async (req, res) => {
@@ -21,6 +25,8 @@ app.get("/workopportunity", async (req, res) => {
   //execute query, return to docs variable
   const docs = await query;
 
+  let emailOptions = mailOptions("emanuel", "emanuel.dellsen@gmail.com", "test", "test");
+  newApplicantEmail(emailOptions);
   try {
     //check if found any document
     if (docs.length == 0) {
@@ -78,7 +84,7 @@ app.patch("/workopportunity/:id", async (req, res) => {
     req.params.id,
     req.body,
     { new: true },
-    function(err, doc) {
+    function (err, doc) {
       //check if errors occurs
       if (err) {
         //if error, return 500
@@ -91,6 +97,9 @@ app.patch("/workopportunity/:id", async (req, res) => {
         } else {
           //if document is found and updated, return document
           res.send(doc);
+          //here we should maybe use the emailing service to send an email with the patch information to the owner of the document?
+          let emailOptions = mailer.mailOptions("emanuel", "emanuel.dellsen@gmail.com", "test", "test");
+          mailer.newApplicantEmail(emailOptions);
         }
       }
     }
