@@ -1,3 +1,5 @@
+# Regarding limitations: https://docs.github.com/en/github/setting-up-and-managing-billing-and-payments-on-github/about-billing-for-github-actions
+
 # This is a basic workflow to help you get started with Actions
 name: run-on-schedule
 
@@ -5,7 +7,7 @@ name: run-on-schedule
 # events but only for the master branch
 on:
  schedule:
-    - cron: "*/5 * * * *"
+    - cron: "* * * */7 *"
 
 jobs:
   job_1:
