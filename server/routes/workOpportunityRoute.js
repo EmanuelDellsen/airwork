@@ -5,7 +5,6 @@ const mailer = require("./mailerRoute");
 const mailOptions = mailer.mailOptions;
 const newApplicantEmail = mailer.newApplicantEmail;
 
-
 //get all
 app.get("/workopportunity", async (req, res) => {
 
