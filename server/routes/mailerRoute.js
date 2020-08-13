@@ -1,41 +1,63 @@
 const express = require("express");
-const nodemailer = require('nodemailer');
-const hbs = require("nodemailer-express-handlebars")
-const app = express();
+const nodemailer = require("nodemailer");
+const hbs = require("nodemailer-express-handlebars");
 
 let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    secure: false,
-    auth: {
-        user: process.env.GMAIL_EMAIL,
-        pass: process.env.GMAIL_PASSWORD
-    },
-    tls: {
-        rejectUnauthorized: false
-    }
+  service: "gmail",
+  secure: false,
+  auth: {
+    user: process.env.GMAIL_EMAIL,
+    pass: process.env.GMAIL_PASSWORD,
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
 });
 
+const handlebarOptions = {
+  viewEngine: {
+    extName: ".handlebars",
+    partialsDir: "email-templates",
+    layoutsDir: "email-templates",
+    defaultLayout: "",
+  },
+  viewPath: "email-templates",
+  extName: ".handlebars",
+};
+transporter.use("compile", hbs(handlebarOptions));
+
 module.exports = {
-    mailOptions: function (sender, receiver, subject, text) {
+  mailOptionsNewEmail: function(
+    sender,
+    receiver,
+    subject,
+    template,
+    workOpportunityCreator,
+    newApplicantUser,
+    workOpportunity
+  ) {
+    const emailOptions = {
+      from: sender,
+      to: receiver,
+      subject: subject,
+      template: template,
+      context: {
+        workOpportunityCreator: workOpportunityCreator,
+        newApplicantUser: newApplicantUser,
+        workOpportunity: workOpportunity,
+      },
+    };
+    return emailOptions;
+  },
 
-        const emailOptions = {
-            from: sender,
-            to: receiver,
-            subject: subject,
-            text: text
-        };
-        return emailOptions;
-    }
-    ,
-
-    newApplicantEmail: function (emailOptions) {
-        transporter.sendMail(emailOptions, (error, response) => {
-            if (error) {
-                console.log(error);
-            } else {
-                console.log(emailOptions)
-                console.log("successfully sent email")
-            }
-        });
-    },
+  newEmail: function(emailOptions) {
+    transporter.sendMail(emailOptions, (error, response) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(emailOptions);
+        console.log("successfully sent email");
+      }
+    });
+  },
 };
