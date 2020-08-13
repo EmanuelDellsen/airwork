@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 //get backup-service
-var backup = require("./backup_db.js");
+var backup = require("./services/backup_db.js");
 //get arguments for backup script
 var args = process.argv.slice(2);
 
