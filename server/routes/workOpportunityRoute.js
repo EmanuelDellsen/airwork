@@ -2,12 +2,11 @@ const express = require("express");
 const Model = require("../models/WorkOpportunityModel");
 const app = express();
 const mailer = require("./mailerRoute");
-const mailOptions = mailer.mailOptions;
-const newApplicantEmail = mailer.newApplicantEmail;
+const mailOptionsNewEmail = mailer.mailOptionsNewEmail;
+const newEmail = mailer.newEmail;
 
 //get all
 app.get("/workopportunity", async (req, res) => {
-
   //initalize param obj, null if not used
   var obj = {};
 
@@ -23,9 +22,16 @@ app.get("/workopportunity", async (req, res) => {
 
   //execute query, return to docs variable
   const docs = await query;
-
-  let emailOptions = mailOptions("emanuel", "emanuel.dellsen@gmail.com", "test", "test");
-  newApplicantEmail(emailOptions);
+  let emailOptions = mailOptionsNewEmail(
+    "emanuel",
+    "emanuel.dellsen@gmail.com",
+    "test",
+    "newApplicantEmail",
+    "Antonella Shahin",
+    "Emanuel Dellsén",
+    "Waitress"
+  );
+  newEmail(emailOptions);
   try {
     //check if found any document
     if (docs.length == 0) {
@@ -82,8 +88,10 @@ app.patch("/workopportunity/:id", async (req, res) => {
   await Model.findByIdAndUpdate(
     req.params.id,
     req.body,
-    { new: true },
-    function (err, doc) {
+    {
+      new: true,
+    },
+    function(err, doc) {
       //check if errors occurs
       if (err) {
         //if error, return 500
@@ -97,8 +105,16 @@ app.patch("/workopportunity/:id", async (req, res) => {
           //if document is found and updated, return document
           res.send(doc);
           //here we should maybe use the emailing service to send an email with the patch information to the owner of the document?
-          let emailOptions = mailer.mailOptions("emanuel", "emanuel.dellsen@gmail.com", "test", "test");
-          mailer.newApplicantEmail(emailOptions);
+          let emailOptions = mailer.mailOptionsNewEmail(
+            "emanuel",
+            "emanuel.dellsen@gmail.com",
+            "test",
+            "newApplicantEmail",
+            "Antonella Shahin",
+            "Emanuel Dellsén",
+            "Waitress"
+          );
+          mailer.newEmail(emailOptions);
         }
       }
     }
