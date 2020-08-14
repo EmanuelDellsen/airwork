@@ -87,11 +87,10 @@ app.patch("/workopportunity/:id", async (req, res) => {
   //option: ' {new: true} ' returns the updated document as the payload
   await Model.findByIdAndUpdate(
     req.params.id,
-    req.body,
-    {
+    req.body, {
       new: true,
     },
-    function(err, doc) {
+    function (err, doc) {
       //check if errors occurs
       if (err) {
         //if error, return 500
@@ -105,16 +104,7 @@ app.patch("/workopportunity/:id", async (req, res) => {
           //if document is found and updated, return document
           res.send(doc);
           //here we should maybe use the emailing service to send an email with the patch information to the owner of the document?
-          let emailOptions = mailer.mailOptionsNewEmail(
-            "emanuel",
-            "emanuel.dellsen@gmail.com",
-            "test",
-            "newApplicantEmail",
-            "Antonella Shahin",
-            "Emanuel Dellsén",
-            "Waitress"
-          );
-          mailer.newEmail(emailOptions);
+
         }
       }
     }
