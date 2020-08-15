@@ -14,11 +14,14 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import VueAxios from 'vue-axios'
 import VueAuthenticate from 'vue-authenticate'
 import axios from 'axios';
+import Vuex from 'vuex';
+
+Vue.use(Vuex);
 
 Vue.use(VueAxios, axios)
+
 Vue.use(VueAuthenticate, {
   baseUrl: 'http://localhost:5000', // Your API domain
-  
   providers: {
     github: {
       clientId: '',
@@ -34,6 +37,7 @@ Vue.use(VueAuthenticate, {
     }
   }
 })
+
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue);

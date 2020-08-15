@@ -1,34 +1,78 @@
 <template>
-    <div>
-        <div class="card-header text-white bg-secondary">
-        <h4>Your profile</h4>
-            <router-link to="/edituserprofile">Edit</router-link>
+    <div class="profile-content">
+        <div class="image-content">
+            <img class="profile-picture" :src="`${user.picture}`">
 
         </div>
-    <div id="profile-info" >
-        <div :key="name" v-for="(value, name) in object">
-            {{ name }}: {{ value }}
+        <div class="profile-info">
+            <div>
+                {{user.given_name}}
+            </div>
+            <div>
+                {{user.family_name}}
+            </div>
+            <div>
+                {{user.email}}
             </div>
         </div>
-
     </div>
-    
+
+
+
 </template>
 
 <script>
 
-// change this to dynamic like forename='' and do ->
-// -> this.forename= value from a get request of logged in user
-export default {
-    data() {
-        return {
-            object: {
-            forename: "Emanuel",
-            surname: "Dellsén",
-            telephone_nr: "123123123",
-            email: "admin@admin.se"
+    import api from "../services/api";
+
+
+    export default {
+        data() {
+            return {
+                loggedInUser: {}
+            }
+        },
+        mounted: function () {
+            this.getUserInfo();
+        },
+        computed: {
+            user: {
+                get() {
+                    return this.$store.state.user;
+                }
+            }
+        },
+        methods: {
+            getUserInfo() {
+                api.getUserInfo(this.$store.state.access_token).then(res => {
+                    console.log(res)
+                    let user = res;
+                    this.$store.dispatch("setUser", user);
+                }).catch(err => {
+                    console.log(err, "getuserinfo error")
+                })
+
+
+
+            }
         }
-    } 
     }
-}
 </script>
+<style>
+    .image-content {
+        text-align: right;
+        float: right;
+        width: 75%;
+
+    }
+
+    .profile-picture {
+        width: 30%;
+        height: 30%;
+
+    }
+
+    .profile-info {
+        width: 25%;
+    }
+</style>

@@ -1,19 +1,21 @@
-/*import Vue from 'vue';
+import Vue from 'vue';
 import Vuex from 'vuex';
-import axios from 'axios';
 
-Vue.use(Vuex);
+import api from "./services/api";
+
+Vue.use(Vuex)
+
 
 export default new Vuex.Store({
   state: {
-    token: localStorage.getItem('token') || '',
+    access_token: localStorage.getItem('token') || '',
     user: {},
-    status: ''
+    status: '',
   },
 
   getters: {
-    isUserLoggedIn: function(state) {
-      if (state.token != '') {
+    isUserLoggedIn: function (state) {
+      if (state.access_token != '' && state.user != {}) {
         return true;
       } else {
         return false;
@@ -21,11 +23,86 @@ export default new Vuex.Store({
     },
 
     authorizedState: state => state.status,
-    user: state => state.user
+    user: state => state.user,
+    access_token: state => state.token
   },
 
   actions: {
-    login({ commit }, user) {
+    authenticateUser({ commit }, provider) {
+      commit('auth_request');
+      console.log(provider, "store");
+      let user = {}
+      this.$auth.authenticate(provider)
+        .then(res => {
+          console.log(res, "inside authenticate promise")
+          const token = res.data.access_token;
+          localStorage.setItem('token', token);
+          api.getUserInfo(token).then(res => {
+            console.log(res, "inside getuserinfo promise")
+            user = res;
+          }).catch(err => {
+            console.log(err, "error from getuserinfo")
+          });
+          commit('auth_success', { token, user });
+        }).catch(err => {
+          console.log(err, "error from authenticate")
+          commit('auth_error', err);
+          localStorage.removeItem('token');
+        })
+
+    },
+    logoutUser({ commit }) {
+      
+        commit('logout');
+        localStorage.removeItem('token');
+      
+    },
+    setUser: ({commit, state}, user) =>{
+      commit("SET_USER", user)
+      return state.user;
+    },
+    setAuthSuccess: ({commit, state}, token) => {
+      commit("SET_AUTH_SUCCESS", token);
+      localStorage.setItem('token', token);
+
+      return state.token;
+    }
+
+   
+  },
+
+
+  mutations: {
+    SET_USER: (state, user ) => {
+      state.user = user;
+    },
+    auth_request(state) {
+      state.status = 'loading';
+    },
+    SET_AUTH_SUCCESS(state,  token ) {
+      console.log(token, "inside auth success")
+
+      state.status = 'success';
+      state.access_token = token;
+    },
+    auth_error(state) {
+      state.status = 'error';
+      state.toast = 'error';
+    },
+    logout(state) {
+      state.access_token = '';
+      state.status = '';
+      state.user= {}
+      console.log(state.access_token)
+      console.log(state.status)
+      console.log(state.user)
+
+
+    }
+  }
+});
+
+ /*login({ commit }, user) {
       return new Promise((resolve, reject) => {
         commit('auth_request');
         axios({
@@ -89,7 +166,8 @@ export default new Vuex.Store({
             reject(err);
           });
       });
-    },
+    }, 
+    
     logout({ commit }) {
       return new Promise((resolve, reject) => {
         commit('logout');
@@ -101,27 +179,4 @@ export default new Vuex.Store({
         resolve();
       });
     }
-  },
-
-  mutations: {
-    auth_request(state) {
-      state.status = 'loading';
-    },
-    auth_success(state, { token, user }) {
-      console.log(token, user + "inside auth success")
-
-      state.status = 'success';
-      state.token = token;
-      state.user = user;
-    },
-    auth_error(state) {
-      state.status = 'error';
-      state.toast = 'error';
-    },
-    logout(state) {
-      state.token = '';
-      state.status = '';
-    }
-  }
-});
 */
