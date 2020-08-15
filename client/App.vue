@@ -1,25 +1,21 @@
 <template>
   <div id="app">
-    <div id="inner">
-      <Navbar id="navbar" />
-    </div>
+    <Navbar id="navbar" />
   </div>
 </template>
 
-
 <script>
+import Navbar from "./components/Navbar.vue";
 
-  import Navbar from "./components/Navbar.vue";
-
-  export default {
-    components: {
-      Navbar
-    }
-  };
+export default {
+  components: {
+    Navbar,
+  },
+};
 </script>
 
 <style>
-  #navbar {
-    padding: 1em
-  }
+#navbar {
+  padding: 1em;
+}
 </style>

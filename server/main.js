@@ -1,30 +1,35 @@
-//Backend based on https://www.digitalocean.com/community/tutorials/nodejs-crud-operations-mongoose-mongodb-atlas
+//backend based on https://www.digitalocean.com/community/tutorials/nodejs-crud-operations-mongoose-mongodb-atlas
 
-//Get all backend running serices
+//get all backend running serices
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
-//Set settings
-require("dotenv").config();
+//get backup-service
+var backup = require("./services/backup_db.js");
+//get arguments for backup script
+var args = process.argv.slice(2);
+
+//set settings
+require("dotenv").config(); // required to be able to fetch env values
 const app = express();
 const PORT = 5000;
 app.use(express.json()); // make sure it will be in json format
-app.use(cors()); //Enable cross-origin resource sharing
+app.use(cors()); // enable cross-origin resource sharing
 
-//Get all routes
+// get all routes
 const authRoute = require("./routes/authRoute.js");
 const workOpportunityRoute = require("./routes/workOpportunityRoute.js");
 
-//Get keys
+// get keys
 const username = process.env.MONGODB_ATLAS_USERNAME;
 const password = process.env.MONGODB_ATLAS_PASSWORD;
 const database = process.env.MONGODB_ATLAS_DATABASE_NAME;
 
-//Get uri to db
+// get uri to db
 const uri = `mongodb+srv://${username}:${password}@airwork-cluster.nnhrk.mongodb.net/${database}?retryWrites=true&w=majority`;
 
-/* Connect to MongoDB Atlas Cloud Server
+/* connect to MongoDB Atlas Cloud Server
 @ useNewUrlParser : required to be able to parse connection strings
 @ useUnifiedTopology : required for mongoose to be able to monitor server
 @ useFindAndModify : required to be able to use methods update methods such as findByIdAndUpdate
@@ -39,13 +44,13 @@ function connect() {
     });
   }, 10000);
 }
-//call connect
+// call connect
 connect();
 
-//Interface db connection
+//interface db connection
 const connection = mongoose.connection;
 
-//Listener to notify when db-connection is established
+//listener to notify when db-connection is established
 connection.on("error", function() {
   //triggered when an error is found
   console.log("- Status: Failed to connect to MongoDB!");
@@ -98,3 +103,9 @@ app.listen(PORT, () => {
   console.log(`Express server listening on port ${PORT}.`);
   console.log(`Backend: http://localhost:${PORT}`);
 });
+
+//check if should run backup
+if (args[0] == "backup") {
+  // use backupservice
+  backup.run(connection);
+}

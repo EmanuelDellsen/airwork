@@ -1,6 +1,6 @@
 <template>
   <div class="center" style="background-color:white;">
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark" id="navbar">
       <ul class="navbar-nav">
         <!--            <li class="nav-item" v-if="isUserLoggedIn"> -->
         <router-link to="/" class="nav-link">AirWork</router-link>
@@ -61,10 +61,20 @@
 
   .center {
     position: absolute;
-    width: 50%;
     left: 0;
     right: 0;
     margin-left: auto;
     margin-right: auto;
+
+    background-color: #f2efea !important;
+  }
+
+  .navbar.navbar-dark.bg-dark {
+    background-color: #1e2d2f !important;
+  }
+
+  .navbar-dark .navbar-nav .nav-link {
+    color: #c4bbaf;
+    border-radius: 8px;
   }
 </style>
