@@ -16,8 +16,11 @@ export default new Vuex.Store({
   getters: {
     isUserLoggedIn: function (state) {
       if (state.access_token != '' && state.user != {}) {
+        console.log(state.access_token, state.user, "in true in isuserloggedin")
         return true;
       } else {
+        console.log(state.access_token, state.user, "in false in isuserloggedin")
+
         return false;
       }
     },

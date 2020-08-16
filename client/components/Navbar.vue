@@ -20,7 +20,7 @@
           <router-link to="/login" class="nav-link">Login</router-link>
         </li>
         <li class="nav-item" v-if="isUserLoggedIn" @click="logoutUser()">
-          <router-link to="/" class="nav-link">Logout</router-link>
+          <router-link to="/loggedout" class="nav-link">Logout</router-link>
         </li>
       </ul>
     </nav>
@@ -41,7 +41,7 @@
       async logoutUser() {
         this.$store
           .dispatch('logoutUser')
-          .then(() => this.$router.push('/'))
+          .then(() => this.$router.push('/loggedout'))
           .catch(err => console.log(err));
       }
     }
@@ -66,15 +66,15 @@
     margin-left: auto;
     margin-right: auto;
 
-    background-color: #f2efea !important;
+    background-color: #ffffff !important;
   }
 
   .navbar.navbar-dark.bg-dark {
-    background-color: #1e2d2f !important;
+    background-color: #66809b !important;
   }
 
   .navbar-dark .navbar-nav .nav-link {
-    color: #c4bbaf;
+    color: #ffffff;
     border-radius: 8px;
   }
 </style>

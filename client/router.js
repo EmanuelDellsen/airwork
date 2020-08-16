@@ -6,6 +6,8 @@ import Register from './views/Register'
 import Profile from './views/Profile'
 import EditUserProfile from './views/EditUserProfile'
 import Applications from './views/Applications'
+import LoggedOut from './views/LoggedOut'
+
 
 Vue.use(Router);
 
@@ -42,6 +44,11 @@ const router = new Router({
       path: '/edituserprofile',
       name: 'EditUserProfile',
       component: EditUserProfile
+    },
+    {
+      path: '/loggedout',
+      name: 'LoggedOut',
+      component: LoggedOut
     }
   ]
 });
