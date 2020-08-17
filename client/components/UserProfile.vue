@@ -23,7 +23,7 @@
 
 <script>
 
-    import api from "../services/api";
+    //import api from "../services/api";
 
 
     export default {
@@ -33,7 +33,7 @@
             }
         },
         mounted: function () {
-            this.getUserInfo();
+            //this.getUserInfo();
         },
         computed: {
             user: {
@@ -43,7 +43,7 @@
             }
         },
         methods: {
-            getUserInfo() {
+            /*getUserInfo() {
                 api.getUserInfo(this.$store.state.access_token).then(res => {
                     console.log(res)
                     let user = res;
@@ -54,7 +54,7 @@
 
 
 
-            }
+            }*/
         }
     }
 </script>

@@ -8,6 +8,7 @@
 </template>
 
 <script>
+  import api from "../services/api";
 
   export default {
     data() {
@@ -23,6 +24,7 @@
           console.log(res, "res in profile")
           this.authResponse = res.data;
           this.$store.dispatch("setAuthSuccess", this.authResponse.access_token);
+          this.getUserInfo();
           this.$router.push('/');
 
         }).catch(err => {
@@ -32,6 +34,18 @@
         /*this.$store.dispatch('authenticateUser', provider).then(() =>
         */
       },
+      getUserInfo() {
+        api.getUserInfo(this.$store.state.access_token).then(res => {
+          console.log(res)
+          let user = res;
+          this.$store.dispatch("setUser", user);
+        }).catch(err => {
+          console.log(err, "getuserinfo error")
+        })
+
+
+
+      }
     }
   };
 </script>

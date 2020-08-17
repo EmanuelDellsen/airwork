@@ -24,6 +24,15 @@ export default new Vuex.Store({
         return false;
       }
     },
+    getUser: function(state){
+      if(state.user != {}){
+        console.log(state.user)
+
+        return state.user;
+      } else {
+        return false;
+      }
+    },
 
     authorizedState: state => state.status,
     user: state => state.user,

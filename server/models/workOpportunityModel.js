@@ -25,6 +25,10 @@ const schema = new mongoose.Schema({
       required: true,
     },
   },
+  formatted_address: {
+    type: String,
+    required: true
+  },
   pay: {
     type: Number,
     required: true,

@@ -17,7 +17,7 @@
         <!-- <router-link to="/register" class="nav-link">Register</router-link> -->
         <!--            </li> -->
         <li class="nav-item" v-if="!isUserLoggedIn">
-          <router-link to="/login" class="nav-link">Login</router-link>
+          <router-link to="/loggedout" class="nav-link">Login</router-link>
         </li>
         <li class="nav-item" v-if="isUserLoggedIn" @click="logoutUser()">
           <router-link to="/loggedout" class="nav-link">Logout</router-link>

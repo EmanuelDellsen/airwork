@@ -18,6 +18,18 @@
     import api from "../services/api.js";
 
     export default {
+        data() {
+            return {
+                currentUser: {}
+            }
+        },
+        computed: {
+            getUser() {
+
+                return this.$store.getters.getUser;
+
+            }
+        },
         name: "ExistingWorkOpportunity",
         props: {
             marker: {
@@ -41,6 +53,12 @@
             applyToWorkOpportunity: function () {
                 //api.patchWorkopportunity(marker.markerID, userID)
                 console.log("PATCHING PATCHING...")
+                if (this.getUser.id !== undefined) {
+                    console.log(this.getUser.id, "is true")
+                } else {
+                    console.log(this.getUser, "is false")
+
+                }
             }
         }
     };
