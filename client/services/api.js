@@ -49,10 +49,11 @@ export default {
   },
   postWorkopportunity(payload) {
     console.log(payload, "in api.js")
-    let start_date_and_time = new Date(payload.dateOfWork + 'Z' + payload.timeOfStart);
-    console.log(start_date_and_time, "start date and time after new date")
-    let workOpportunityHoursInMinutes = Number(payload.hoursOFWork) * 60;
-    let end_date_and_time = this.addMinutes(start_date_and_time + workOpportunityHoursInMinutes)
+    let start_date_and_time = new Date(payload.dateOfWork + 'Z');
+    var splitTimeOfStart = payload.timeOfStart.split(':');
+    start_date_and_time.setHours(splitTimeOfStart[0], splitTimeOfStart[1], 0, 0);
+    let workOpportunityHoursInMinutes = Number(payload.hoursOfWork) * 60;
+    let end_date_and_time = this.addMinutes(start_date_and_time, workOpportunityHoursInMinutes)
     let newWorkOpportunity = {
       title: payload.typeOfWork,
       start_date_and_time: start_date_and_time,
