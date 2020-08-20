@@ -55,6 +55,14 @@
                 console.log("PATCHING PATCHING...")
                 if (this.getUser.id !== undefined) {
                     console.log(this.getUser.id, "is true")
+                    console.log(this.marker.markerID)
+                    let payload = {
+                        $push: {
+                            applicants: this.getUser.id
+                        }
+                    }
+
+                    api.patchWorkopportunity(this.marker.markerID, payload)
                 } else {
                     console.log(this.getUser, "is false")
 

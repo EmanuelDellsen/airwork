@@ -85,11 +85,11 @@ app.post("/workopportunity", async (req, res) => {
 app.patch("/workopportunity/:id", async (req, res) => {
   //searches for document by id and updates directly in db if found
   //option: ' {new: true} ' returns the updated document as the payload
-  await Model.findByIdAndUpdate(
+  Model.findByIdAndUpdate(
     req.params.id,
     req.body, {
-      new: true,
-    },
+    new: true,
+  },
     function (err, doc) {
       //check if errors occurs
       if (err) {

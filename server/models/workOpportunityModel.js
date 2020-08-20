@@ -41,6 +41,15 @@ const schema = new mongoose.Schema({
     default: "No description",
     required: true,
   },
+  applicants: [{
+
+    type: String,
+    required: false,
+    unique: true,
+    dropDups: true
+
+
+  }],
   company: {
     type: mongoose.Schema.Types.ObjectId,
     required: false,

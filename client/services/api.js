@@ -69,7 +69,10 @@ export default {
     return this.execute("post", "/workopportunity", newWorkOpportunity, null, null);
   },
   patchWorkopportunity(id, payload) {
-    return this.execute("put", `/workopportunity/${id}`, payload, null, null);
+    console.log(payload, "payload")
+    console.log(id, "ID")
+
+    return this.execute("patch", `/workopportunity/${id}`, payload, null, null);
   },
   getUserInfo(access_token) {
     return this.execute("get", `/auth/userinfo/${access_token}`, null, null, null)
