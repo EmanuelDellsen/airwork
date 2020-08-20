@@ -31,6 +31,15 @@ export default {
   getAllWorkopportunity() {
     return this.execute("get", `/workopportunity`, null, null);
   },
+  //Calls from client to server
+  getAllWorkopportunityWhereUserIsApplicant(userId) {
+    console.log(userId, "user id in api.js")
+    var params = {
+      applicants: userId
+    };
+    var params_stringified = JSON.stringify(params)
+    return this.execute("get", `/workopportunity`, null, params_stringified);
+  },
   getAllWorkopportunity_withinLocation(box) {
     //construct parameters
     var params = {

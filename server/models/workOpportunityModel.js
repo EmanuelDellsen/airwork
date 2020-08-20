@@ -44,11 +44,7 @@ const schema = new mongoose.Schema({
   applicants: [{
 
     type: String,
-    required: false,
-    unique: true,
-    dropDups: true
-
-
+    required: false
   }],
   company: {
     type: mongoose.Schema.Types.ObjectId,

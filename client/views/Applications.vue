@@ -8,7 +8,7 @@
       <h3 class="application-title">
         {{ item.title }}
       </h3>
-      <p class="application-info">Where: {{ item.location }}</p>
+      <p class="application-info">Where: {{ item.formatted_address }}</p>
       <p class="application-info">Employer: {{ item.company }}</p>
       <p class="application-info">
         When the job starts: {{ item.startDate }} and ends: {{ item.endDate }}
@@ -35,16 +35,26 @@ export default {
     return {
       alldata: [],
       myWorkOpportunities: [],
+      loggedInUser: {},
     };
+  },
+  computed: {
+    user: {
+      get() {
+        return this.$store.state.user;
+      },
+    },
   },
   created() {
     this.refreshWorkopportunities();
   },
   methods: {
     refreshWorkopportunities: async function() {
-      this.alldata = await api.getAllWorkopportunity();
+      this.alldata = await api.getAllWorkopportunityWhereUserIsApplicant(
+        this.user.id
+      );
       /*eslint-disable*/
-      console.log(this.alldata);
+      console.log(this.alldata, "here is the problem");
       this.parseDataToJSObject(this.alldata);
     },
     parseDataToJSObject: function(dataList) {
@@ -104,6 +114,8 @@ export default {
           payment: dataList[i].pay,
           description: dataList[i].description,
           myWorkOpportunityID: dataList[i]._id,
+          applicants: dataList[i].applicants,
+          formatted_address: dataList[i].formatted_address,
         };
         this.myWorkOpportunities.push(myWorkOpportunity);
       }

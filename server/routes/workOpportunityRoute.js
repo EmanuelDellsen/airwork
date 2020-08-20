@@ -15,6 +15,7 @@ app.get("/workopportunity", async (req, res) => {
     //setup params
     var params = req.query[0];
     obj = JSON.parse(params);
+    console.log(obj, "params in object")
   }
 
   //setup query
@@ -40,6 +41,7 @@ app.get("/workopportunity", async (req, res) => {
     } else {
       //if found 1-* document, return all documents
       res.send(docs);
+      console.log(docs)
     }
   } catch (err) {
     //if error, return 500
@@ -88,8 +90,8 @@ app.patch("/workopportunity/:id", async (req, res) => {
   Model.findByIdAndUpdate(
     req.params.id,
     req.body, {
-    new: true,
-  },
+      new: true,
+    },
     function (err, doc) {
       //check if errors occurs
       if (err) {
