@@ -6,7 +6,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 //get backup-service
-var backup = require("./services/backup_db.js");
+var backupService = require("./services/backup_db.js");
+var driveService = require("./services/drive_api.js");
 //get arguments for backup script
 var args = process.argv.slice(2);
 
@@ -106,6 +107,10 @@ app.listen(PORT, () => {
 
 //check if should run backup
 if (args[0] == "backup") {
-  // use backupservice
-  backup.run(connection);
+  // download collections
+  backupService.run(connection);
+
+  // upload collections
+  driveService.run();
+
 }

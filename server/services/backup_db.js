@@ -21,7 +21,7 @@ async function getCollection(connection, element) {
     });
 
     // write to file
-    fs.writeFile(`${element}.json`, store, "utf8", function(err) {
+    fs.writeFile(`services/collections/${element}.json`, store, "utf8", function(err) {
       if (err) {
         console.log("An error occured while writing JSON Object to File.");
         return console.log(err);
@@ -36,20 +36,11 @@ async function getCollection(connection, element) {
   }
 }
 
-async function readJsonFile(element) {
-  var obj;
-  fs.readFile(`${element}.json`, "utf8", function(err, data) {
-    if (err) throw err;
-    obj = JSON.parse(data);
-
-    console.log(obj);
-  });
-}
-
 var methods = {
   run: function(connection) {
     // get all collections
     var collections = connection.collections;
+    console.log(collections)
 
     // get all names of collections
     var names = Object.keys(collections);

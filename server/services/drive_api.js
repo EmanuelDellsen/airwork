@@ -1,51 +1,57 @@
 const fs = require("fs");
 const readline = require("readline");
 const { google } = require("googleapis");
+const path = require("path"); //enable using relative path
 
 // If modifying these scopes, delete token.json.
-const SCOPES = ["https://www.googleapis.com/auth/drive.metadata.readonly"];
+const SCOPES = [
+  "https://www.googleapis.com/auth/drive.metadata.readonly",
+  "https://www.googleapis.com/auth/drive",
+];
+
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
-const TOKEN_PATH = "token.json";
+const TOKEN_PATH = path.resolve(__dirname, "../../token.json");
+const EXTENSION = "json";
 
-// Load client secrets from a local file.
-fs.readFile("credentials.json", (err, content) => {
-  if (err) return console.log("Error loading client secret file:", err);
-  // Authorize a client with credentials, then call the Google Drive API.
-  authorize(JSON.parse(content), listFiles);
-});
+async function getCredentials() {
+  var data = fs.readFileSync(
+    path.resolve(__dirname, "../../credentials.json"),
+    (err, content) => {
+      if (err) {
+        throw err;
+      } else {
+        return content;
+      }
+    }
+  );
+  return data;
+}
 
-/**
- * Create an OAuth2 client with the given credentials, and then execute the
- * given callback function.
- * @param {Object} credentials The authorization client credentials.
- * @param {function} callback The callback to call with the authorized client.
- */
-function authorize(credentials, callback) {
+async function getOAuthClient(credentials) {
   const { client_secret, client_id, redirect_uris } = credentials.content;
-  const oAuth2Client = new google.auth.OAuth2(
+  const oAuthClient = new google.auth.OAuth2(
     client_id,
     client_secret,
     redirect_uris[0]
   );
-
-  // Check if we have previously stored a token.
-  fs.readFile(TOKEN_PATH, (err, token) => {
-    if (err) return getAccessToken(oAuth2Client, callback);
-    oAuth2Client.setCredentials(JSON.parse(token));
-    callback(oAuth2Client);
-  });
+  return oAuthClient;
 }
 
-/**
- * Get and store new token after prompting for user authorization, and then
- * execute the given callback with the authorized OAuth2 client.
- * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
- * @param {getEventsCallback} callback The callback for the authorized client.
- */
-function getAccessToken(oAuth2Client, callback) {
-  const authUrl = oAuth2Client.generateAuthUrl({
+async function getAccessToken() {
+  var data = fs.readFileSync(TOKEN_PATH, (err, token) => {
+    if (err) {
+      return null;
+    } else {
+      return token;
+    }
+  });
+  return data;
+}
+
+async function createAccessToken(oAuthClient) {
+  const authUrl = oAuthClient.generateAuthUrl({
     access_type: "offline",
     scope: SCOPES,
   });
@@ -58,39 +64,104 @@ function getAccessToken(oAuth2Client, callback) {
     rl.close();
     oAuth2Client.getToken(code, (err, token) => {
       if (err) return console.error("Error retrieving access token", err);
-      oAuth2Client.setCredentials(token);
       // Store the token to disk for later program executions
       fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
         if (err) return console.error(err);
         console.log("Token stored to", TOKEN_PATH);
       });
-      callback(oAuth2Client);
     });
   });
 }
 
-/**
- * Lists the names and IDs of up to 10 files.
- * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
- */
-function listFiles(auth) {
+async function createFolder(auth) {
   const drive = google.drive({ version: "v3", auth });
-  drive.files.list(
-    {
-      pageSize: 10,
-      fields: "nextPageToken, files(id, name)",
-    },
-    (err, res) => {
-      if (err) return console.log("The API returned an error: " + err);
-      const files = res.data.files;
-      if (files.length) {
-        console.log("Files:");
-        files.map((file) => {
-          console.log(`${file.name} (${file.id})`);
-        });
-      } else {
-        console.log("No files found.");
-      }
-    }
-  );
+
+  let date = new Date();
+  let date_string = date.toString();
+
+  var fileMetadata = {
+    //name = name of folder
+    name: date_string,
+    mimeType: "application/vnd.google-apps.folder",
+  };
+  let folder = await drive.files.create({
+    resource: fileMetadata,
+    fields: "id",
+  });
+  return folder.data.id;
 }
+
+async function uploadFile(auth, folder_id, file) {
+  const drive = google.drive({ version: "v3", auth });
+  var fileMetadata = {
+    //name = name of file in drive
+    name: file,
+    parents: [folder_id],
+  };
+  var media = {
+    mimeType: "text/plain",
+    body: fs.createReadStream(`collections/${file}`),
+  };
+  let content = await drive.files.create({
+    resource: fileMetadata,
+    media: media,
+    fields: "id",
+  });
+  return content.data.id;
+}
+
+function getAllFilesByExtension(base, ext) {
+  console.log(base);
+  var files = fs.readdirSync(base);
+  var result = [];
+
+  files.forEach(function(file) {
+    if (file.substr(-1 * (ext.length + 1)) == "." + ext) {
+      result.push(file);
+    }
+  });
+  return result;
+}
+
+async function main() {
+  try {
+    var credentials = await getCredentials();
+    var oAuthClient = await getOAuthClient(JSON.parse(credentials));
+    var token = await getAccessToken();
+
+    if (!token) {
+      await createAccessToken(oAuthClient);
+      token = await getAccessToken();
+    }
+    oAuthClient.setCredentials(JSON.parse(token));
+    var folder_id = await createFolder(oAuthClient);
+
+    // get files to be uploaded
+    var ptr = path.resolve(__dirname);
+    var fullpath = ptr.concat("/collections");
+    console.log(fullpath)
+    var files = getAllFilesByExtension(fullpath, EXTENSION);
+
+    console.log("Files",files)
+
+    files.forEach(async function(file) {
+      try {
+        var num = await uploadFile(oAuthClient, folder_id, file);
+        console.log(num);
+      } catch (e) {
+        console.log("Error caught");
+      }
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+var methods = {
+  run: function() {
+    // run main
+    main();
+  },
+};
+
+module.exports = methods;
