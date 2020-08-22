@@ -31,10 +31,23 @@ export default {
   getAllWorkopportunity() {
     return this.execute("get", `/workopportunity`, null, null);
   },
+  //Calls from client to server
+  getAllWorkopportunityWhereUserIsApplicant(userId) {
+    console.log(userId, "user id in api.js")
+    var params = {
+      applicants: userId
+    };
+    var params_stringified = JSON.stringify(params)
+    return this.execute("get", `/workopportunity`, null, params_stringified);
+  },
   getAllWorkopportunity_withinLocation(box) {
     //construct parameters
     var params = {
-      coordinates: { $geoWithin: { $box: [box.point1, box.point2] } },
+      coordinates: {
+        $geoWithin: {
+          $box: [box.point1, box.point2]
+        }
+      },
     };
     //stringify required for proper format
     var params_stringified = JSON.stringify(params);
@@ -44,12 +57,36 @@ export default {
     return this.execute("get", `/workopportunity/${id}`, null, null);
   },
   postWorkopportunity(payload) {
-    return this.execute("post", "/workopportunity", payload, null, null);
+    console.log(payload, "in api.js")
+    let start_date_and_time = new Date(payload.dateOfWork + 'Z');
+    var splitTimeOfStart = payload.timeOfStart.split(':');
+    start_date_and_time.setHours(splitTimeOfStart[0], splitTimeOfStart[1], 0, 0);
+    let workOpportunityHoursInMinutes = Number(payload.hoursOfWork) * 60;
+    let end_date_and_time = this.addMinutes(start_date_and_time, workOpportunityHoursInMinutes)
+    let newWorkOpportunity = {
+      title: payload.typeOfWork,
+      start_date_and_time: start_date_and_time,
+      end_date_and_time: end_date_and_time,
+      coordinates: {
+        lng: payload.geoLocation.lng,
+        lat: payload.geoLocation.lat
+      },
+      formatted_address: payload.formattedAddress,
+      pay: Number(payload.paymentAmount),
+      description: payload.workDescription
+    }
+    return this.execute("post", "/workopportunity", newWorkOpportunity, null, null);
   },
   patchWorkopportunity(id, payload) {
-    return this.execute("put", `/workopportunity/${id}`, payload, null, null);
+    console.log(payload, "payload")
+    console.log(id, "ID")
+
+    return this.execute("patch", `/workopportunity/${id}`, payload, null, null);
   },
-  getUserInfo(access_token){
-    return this.execute("get",`/auth/userinfo/${access_token}`,null,null,null)
+  getUserInfo(access_token) {
+    return this.execute("get", `/auth/userinfo/${access_token}`, null, null, null)
+  },
+  addMinutes(date, minutes) {
+    return new Date(date.getTime() + minutes * 60000);
   }
 }

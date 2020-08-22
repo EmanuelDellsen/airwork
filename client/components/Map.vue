@@ -6,8 +6,6 @@
         @click="toggleInfoWindow(item, key)"></gmap-marker>
       <gmap-info-window id="info_window" :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen"
         @closeclick="infoWinOpen = false">
-
-
         <CreateWorkOpportunity v-if="currentMarker !== null && currentMarker.newMarker" v-bind:marker="currentMarker">
         </CreateWorkOpportunity>
         <ExistingWorkOpportunity v-else v-bind:marker="currentMarker"></ExistingWorkOpportunity>
@@ -78,26 +76,39 @@
     methods: {
       // after a user clicks on the map the information stored on from that location is stored in local variables
       getClickinfo: function (location) {
+        console.log(location)
         this.currentLocation = location;
         this.addMarker();
-        console.log("inside getClickInfo");
+        console.log(this.currentLocation, "inside getClickInfo");
       },
       // add a markers on the current location which is set when a user clickes the map
       addMarker: function () {
-        let marker = {
-          location: {
-            lng: this.currentLocation.latLng.lng(),
-            lat: this.currentLocation.latLng.lat(),
-          },
-          markerInfo: "Here detailed info will be",
-          newMarker: true,
-        };
-        //this.markers.push({ location: marker });
-        //this.places.push(this.currentLocation);
-        this.markers.push(marker);
-        console.log("inside addMarker");
-        console.log(this.markers);
-        this.currentMarker = marker;
+        var geocoder = new this.google.maps.Geocoder();
+        var location = this.currentLocation.latLng;
+        var formatted_address = "";
+        let marker = {};
+        let markers = this.markers;
+        geocoder.geocode({ 'location': location }, function (results, status) {
+          if (status == 'OK') {
+            formatted_address = results[0].formatted_address;
+            marker = {
+              location: {
+                lng: location.lng(),
+                lat: location.lat()
+              },
+              formattedAddress: formatted_address,
+              markerInfo: "Here detailed info will be",
+              newMarker: true,
+            };
+            //crazy problem unless double declaration this=that level
+            markers.push(marker);
+            this.markers = markers;
+            this.currentMarker = marker;
+          } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+          }
+        });
+
       },
       getWorkOpportunities: async function () {
         console.log("moved the map now");
@@ -114,22 +125,21 @@
 
         var boundingBox = {
           point1: [southWestLng, southWestLat],
-          point2: [northEastLng, northEastLat]
-        }
+          point2: [northEastLng, northEastLat],
+        };
         try {
-          this.markersWithinBoundary = await api.getAllWorkopportunity_withinLocation(boundingBox);
+          this.markersWithinBoundary = await api.getAllWorkopportunity_withinLocation(
+            boundingBox
+          );
           console.log(this.markersWithinBoundary);
           console.log(boundingBox);
           this.updateWorkOpportunities();
-
         } catch (error) {
           //add more error reponse checks and provide user with correct toast/message
           if (error.response.status === 404) {
-            console.log("no WOs found")
+            console.log("no WOs found");
           }
         }
-
-
       },
       updateWorkOpportunities: function () {
         for (let i = 0; i < this.markers.length; i++) {
@@ -149,7 +159,7 @@
               },
               markerInfo: this.markersWithinBoundary[i].title,
               newMarker: false,
-              markerID: this.markersWithinBoundary[i]._id
+              markerID: this.markersWithinBoundary[i]._id,
             };
             this.markers.push(marker);
             console.log("marker after push");
@@ -209,7 +219,7 @@
         let currentLng = this.currentLocation.geometry.location.lng();
         this.$refs.map.$mapPromise.then((map) => {
           map.panTo({ lat: currentLat, lng: currentLng });
-          map.setZoom(15)
+          map.setZoom(15);
         });
       },
       // write method to load all workopportunities where the map

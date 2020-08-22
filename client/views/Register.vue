@@ -3,7 +3,7 @@
     <div class="row justify-content-center">
       <div class="card-mx-auto">
         <div class="card-header text-white bg-secondary">
-          <h4>Register</h4>
+          <h4>Become a member of the AirWork family</h4>
         </div>
         <div class="card-body">
           <form @submit.prevent="registerUser">
@@ -117,5 +117,14 @@
 <style>
 .row {
   margin: 5%;
+  padding: 2%;
+}
+.card-header.text-white.bg-secondary {
+  background-color: #1e2d2f !important;
+  color: #c4bbaf !important;
+}
+.btn.btn-secondary {
+  background-color: #1e2d2f;
+  color: #c4bbaf !important;
 }
 </style>

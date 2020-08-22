@@ -25,6 +25,10 @@ const schema = new mongoose.Schema({
       required: true,
     },
   },
+  formatted_address: {
+    type: String,
+    required: true
+  },
   pay: {
     type: Number,
     required: true,
@@ -37,6 +41,11 @@ const schema = new mongoose.Schema({
     default: "No description",
     required: true,
   },
+  applicants: [{
+
+    type: String,
+    required: false
+  }],
   company: {
     type: mongoose.Schema.Types.ObjectId,
     required: false,
