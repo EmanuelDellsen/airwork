@@ -7,7 +7,7 @@ name: run-on-schedule
 # events but only for the master branch
 on:
  schedule:
-    - cron: "* * * */7 *"
+    - cron: "*/60 */24 */7 * *"
 
 jobs:
   job_1:
