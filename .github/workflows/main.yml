@@ -8,7 +8,7 @@ name: run-on-schedule
 on:
  schedule:
     # - cron: "*/60 */24 */7 * *" # real backup schedule
-    - cron "*/5 */14 */ * *"
+    - cron: "*/5 */14 */ * *"
 
 jobs:
   job_1:
