@@ -7,7 +7,8 @@ name: run-on-schedule
 # events but only for the master branch
 on:
  schedule:
-    - cron: "* * * */7 *"
+    - cron: "*/60 */24 */7 * *" # real backup schedule
+    #- cron: "*/5 */14 */ * *"
 
 jobs:
   job_1:
@@ -16,25 +17,6 @@ jobs:
     steps:
       - shell: bash
         run: |
-          echo "create backup"
-          expr 3 + 7 > test.txt
-      - name: Upload backup files to artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: test
-          path: test.txt
-
-  job_2:
-    name: upload to google drive
-    needs: job_1
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifact from job_1
-        uses: actions/download-artifact@v2
-        with:
-          name: test
-      - shell: bash
-        run: |
-          value=`cat test.txt`
-          echo $value
-          echo upload to google drive
+          echo "backup: starting""
+          npm run backup
+          echo "backup: finished"
