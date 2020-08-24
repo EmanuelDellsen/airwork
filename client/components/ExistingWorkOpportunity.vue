@@ -60,6 +60,7 @@ export default {
           },
         };
 
+        //let payload_stringified = JSON.stringify(payload);
         api.patchWorkopportunity(this.marker.markerID, payload);
       } else {
         console.log(this.getUser, "is false");

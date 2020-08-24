@@ -23,16 +23,7 @@ app.get("/workopportunity", async (req, res) => {
 
   //execute query, return to docs variable
   const docs = await query;
-  let emailOptions = mailOptionsNewEmail(
-    "emanuel",
-    "emanuel.dellsen@gmail.com",
-    "test",
-    "newApplicantEmail",
-    "Antonella Shahin",
-    "Emanuel Dellsén",
-    "Waitress"
-  );
-  newEmail(emailOptions);
+
   try {
     //check if found any document
     if (docs.length == 0) {
@@ -87,6 +78,7 @@ app.post("/workopportunity", async (req, res) => {
 app.patch("/workopportunity/:id", async (req, res) => {
   //searches for document by id and updates directly in db if found
   //option: ' {new: true} ' returns the updated document as the payload
+
   Model.findByIdAndUpdate(
     req.params.id,
     req.body, {
@@ -105,8 +97,18 @@ app.patch("/workopportunity/:id", async (req, res) => {
         } else {
           //if document is found and updated, return document
           res.send(doc);
+          console.log(doc)
           //here we should maybe use the emailing service to send an email with the patch information to the owner of the document?
-
+          let emailOptions = mailOptionsNewEmail(
+            "AirWork",
+            "Creator_of_WO@email.com",
+            "Someone new is interested..",
+            "newApplicantEmail",
+            "Creator of WO",
+            "new user name",
+            doc.title
+          );
+          newEmail(emailOptions);
         }
       }
     }

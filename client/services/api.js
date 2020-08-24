@@ -80,7 +80,6 @@ export default {
   patchWorkopportunity(id, payload) {
     console.log(payload, "payload")
     console.log(id, "ID")
-
     return this.execute("patch", `/workopportunity/${id}`, payload, null, null);
   },
   getUserInfo(access_token) {

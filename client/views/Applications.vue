@@ -19,7 +19,7 @@
       <p class="application-info">ID: {{ item.myWorkOpportunityID }}</p>
       <button
         id="removeApplication"
-        @click="unapplyFromWorkOpportunity(item.myWorkOpportunityID)"
+        @click="unapplyFromWorkOpportunity(item, key)"
       >
         Unapply
       </button>
@@ -55,9 +55,9 @@ export default {
       );
       /*eslint-disable*/
       console.log(this.alldata, "here is the problem");
-      this.parseDataToJSObject(this.alldata);
+      this.parseDataToJSONObject(this.alldata);
     },
-    parseDataToJSObject: function(dataList) {
+    parseDataToJSONObject: function(dataList) {
       for (let i = 0; i < dataList.length; i++) {
         let startDate = Date.parse(dataList[i].start_date_and_time);
         startDate = new Date(startDate);
@@ -122,8 +122,19 @@ export default {
       console.log(this.myWorkOpportunities);
     },
     displayWorkOpportunities: function() {},
-    unapplyFromWorkOpportunity: function(workOpportunityID) {
-      console.log(workOpportunityID);
+    unapplyFromWorkOpportunity: function(workOpportunity, index) {
+      //classic scope problem
+      var self = this;
+      var params = {
+        $pull: { applicants: this.user.id },
+      };
+      console.log(params);
+      //var params_stringified = JSON.stringify(params);
+      api
+        .patchWorkopportunity(workOpportunity.myWorkOpportunityID, params)
+        .then(function(response) {
+          self.$delete(self.myWorkOpportunities, index);
+        });
     },
   },
 };

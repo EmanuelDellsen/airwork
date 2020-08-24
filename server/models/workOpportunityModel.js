@@ -46,6 +46,7 @@ const schema = new mongoose.Schema({
     type: String,
     required: false
   }],
+  // Have "creator" which is a user instead here maybe?
   company: {
     type: mongoose.Schema.Types.ObjectId,
     required: false,
