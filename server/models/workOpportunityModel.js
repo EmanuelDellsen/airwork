@@ -27,7 +27,7 @@ const schema = new mongoose.Schema({
   },
   formatted_address: {
     type: String,
-    required: true
+    required: true,
   },
   pay: {
     type: Number,
@@ -42,14 +42,12 @@ const schema = new mongoose.Schema({
     required: true,
   },
   applicants: [{
-
-    type: String,
-    required: false
-  }],
-  // Have "creator" which is a user instead here maybe?
-  company: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Object,
     required: false,
+  }, ],
+  creator: {
+    type: Object,
+    required: true,
   },
 });
 

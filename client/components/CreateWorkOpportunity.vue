@@ -106,6 +106,13 @@ export default {
       },
     },
   },
+  computed: {
+    user: {
+      get() {
+        return this.$store.state.user;
+      },
+    },
+  },
   data() {
     return {
       typeOfWork: "",
@@ -132,6 +139,7 @@ export default {
         workDescription: this.workDescription,
         geoLocation: this.marker.location,
         formattedAddress: this.marker.formattedAddress,
+        creator: this.user,
       };
       console.log(this.marker);
 

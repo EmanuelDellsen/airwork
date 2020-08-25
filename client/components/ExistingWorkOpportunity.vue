@@ -24,8 +24,10 @@ export default {
     };
   },
   computed: {
-    getUser() {
-      return this.$store.getters.getUser;
+    user: {
+      get() {
+        return this.$store.getters.getUser;
+      },
     },
   },
   name: "ExistingWorkOpportunity",
@@ -51,19 +53,20 @@ export default {
     applyToWorkOpportunity: function() {
       //api.patchWorkopportunity(marker.markerID, userID)
       console.log("PATCHING PATCHING...");
-      if (this.getUser.id !== undefined) {
-        console.log(this.getUser.id, "is true");
+      if (this.user.id !== undefined) {
+        console.log(this.user.id, "is true");
         console.log(this.marker.markerID);
+        console.log(this.user, "get user");
         let payload = {
           $addToSet: {
-            applicants: this.getUser.id,
+            applicants: this.user,
           },
         };
 
         //let payload_stringified = JSON.stringify(payload);
         api.patchWorkopportunity(this.marker.markerID, payload);
       } else {
-        console.log(this.getUser, "is false");
+        console.log(this.user, "is false");
       }
     },
   },

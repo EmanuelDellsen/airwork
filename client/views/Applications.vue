@@ -116,6 +116,7 @@ export default {
           myWorkOpportunityID: dataList[i]._id,
           applicants: dataList[i].applicants,
           formatted_address: dataList[i].formatted_address,
+          creator: dataList[i].creator,
         };
         this.myWorkOpportunities.push(myWorkOpportunity);
       }
@@ -126,7 +127,7 @@ export default {
       //classic scope problem
       var self = this;
       var params = {
-        $pull: { applicants: this.user.id },
+        $pull: { applicants: { id: this.user.id } },
       };
       console.log(params);
       //var params_stringified = JSON.stringify(params);

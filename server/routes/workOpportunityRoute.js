@@ -15,7 +15,7 @@ app.get("/workopportunity", async (req, res) => {
     //setup params
     var params = req.query[0];
     obj = JSON.parse(params);
-    console.log(obj, "params in object")
+    console.log(obj, "params in object");
   }
 
   //setup query
@@ -32,7 +32,7 @@ app.get("/workopportunity", async (req, res) => {
     } else {
       //if found 1-* document, return all documents
       res.send(docs);
-      console.log(docs)
+      console.log(docs);
     }
   } catch (err) {
     //if error, return 500
@@ -78,7 +78,11 @@ app.post("/workopportunity", async (req, res) => {
 app.patch("/workopportunity/:id", async (req, res) => {
   //searches for document by id and updates directly in db if found
   //option: ' {new: true} ' returns the updated document as the payload
-
+  var jsonreq = req.body;
+  //console.log(Object.keys(jsonreq)[0], "jsonreq")
+  if (Object.keys(jsonreq)[0] === '$pull') {
+    console.log("hejhej")
+  }
   Model.findByIdAndUpdate(
     req.params.id,
     req.body, {
@@ -97,18 +101,20 @@ app.patch("/workopportunity/:id", async (req, res) => {
         } else {
           //if document is found and updated, return document
           res.send(doc);
-          console.log(doc)
+          console.log(doc);
           //here we should maybe use the emailing service to send an email with the patch information to the owner of the document?
-          let emailOptions = mailOptionsNewEmail(
-            "AirWork",
-            "Creator_of_WO@email.com",
-            "Someone new is interested..",
-            "newApplicantEmail",
-            "Creator of WO",
-            "new user name",
-            doc.title
-          );
-          newEmail(emailOptions);
+          if (Object.keys(jsonreq)[0] === '$addToSet') {
+            let emailOptions = mailOptionsNewEmail(
+              "AirWork",
+              doc.creator.email,
+              "Someone new is interested..",
+              "newApplicantEmail",
+              doc.creator.name,
+              req.body.$addToSet.applicants.name,
+              doc.title
+            );
+            newEmail(emailOptions);
+          }
         }
       }
     }

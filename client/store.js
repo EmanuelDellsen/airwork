@@ -14,18 +14,10 @@ export default new Vuex.Store({
   },
 
   getters: {
-    isUserLoggedIn: function (state) {
-      if (state.access_token != '' && state.user != {}) {
-        console.log(state.access_token, state.user, "in true in isuserloggedin")
-        return true;
-      } else {
-        console.log(state.access_token, state.user, "in false in isuserloggedin")
-
-        return false;
-      }
-    },
-    getUser: function(state){
-      if(state.user != {}){
+    isUserLoggedIn: state => !!state.access_token,
+    authStatus: state => state.status,
+    getUser: function (state) {
+      if (state.user != {}) {
         console.log(state.user)
 
         return state.user;
@@ -40,7 +32,9 @@ export default new Vuex.Store({
   },
 
   actions: {
-    authenticateUser({ commit }, provider) {
+    authenticateUser({
+      commit
+    }, provider) {
       commit('auth_request');
       console.log(provider, "store");
       let user = {}
@@ -55,7 +49,10 @@ export default new Vuex.Store({
           }).catch(err => {
             console.log(err, "error from getuserinfo")
           });
-          commit('auth_success', { token, user });
+          commit('auth_success', {
+            token,
+            user
+          });
         }).catch(err => {
           console.log(err, "error from authenticate")
           commit('auth_error', err);
@@ -63,35 +60,43 @@ export default new Vuex.Store({
         })
 
     },
-    logoutUser({ commit }) {
-      
-        commit('logout');
-        localStorage.removeItem('token');
-      
+    logoutUser({
+      commit
+    }) {
+
+      commit('logout');
+      localStorage.removeItem('token');
+
     },
-    setUser: ({commit, state}, user) =>{
+    setUser: ({
+      commit,
+      state
+    }, user) => {
       commit("SET_USER", user)
       return state.user;
     },
-    setAuthSuccess: ({commit, state}, token) => {
+    setAuthSuccess: ({
+      commit,
+      state
+    }, token) => {
       commit("SET_AUTH_SUCCESS", token);
       localStorage.setItem('token', token);
 
       return state.token;
     }
 
-   
+
   },
 
 
   mutations: {
-    SET_USER: (state, user ) => {
+    SET_USER: (state, user) => {
       state.user = user;
     },
     auth_request(state) {
       state.status = 'loading';
     },
-    SET_AUTH_SUCCESS(state,  token ) {
+    SET_AUTH_SUCCESS(state, token) {
       console.log(token, "inside auth success")
 
       state.status = 'success';
@@ -104,7 +109,7 @@ export default new Vuex.Store({
     logout(state) {
       state.access_token = '';
       state.status = '';
-      state.user= {}
+      state.user = {}
       console.log(state.access_token)
       console.log(state.status)
       console.log(state.user)
@@ -114,7 +119,7 @@ export default new Vuex.Store({
   }
 });
 
- /*login({ commit }, user) {
+/*login({ commit }, user) {
       return new Promise((resolve, reject) => {
         commit('auth_request');
         axios({
