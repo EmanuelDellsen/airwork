@@ -51,5 +51,5 @@ const schema = new mongoose.Schema({
   },
 });
 
-const model = mongoose.model("workOpportunity", schema);
+const model = mongoose.model("workopportunity", schema);
 module.exports = model;
