@@ -6,9 +6,7 @@
         <router-link to="/home" class="nav-link">AirWork</router-link>
         <!--            </li> -->
         <li class="nav-item" v-if="isUserLoggedIn">
-          <router-link to="/applications" class="nav-link"
-            >Applications</router-link
-          >
+          <router-link to="/applications" class="nav-link">Applications</router-link>
         </li>
         <li class="nav-item" v-if="isUserLoggedIn">
           <router-link to="/profile" class="nav-link">Profile</router-link>
@@ -34,49 +32,48 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-export default {
-  computed: {
-    ...mapGetters(["isUserLoggedIn"]),
-  },
-  methods: {
-    async logoutUser() {
-      this.$store
-        .dispatch("logoutUser")
-        .then(() => this.$router.push("/login"))
-        .catch((err) => console.log(err));
+  export default {
+    computed: {
+      isUserLoggedIn: function () { return this.$store.getters.isUserLoggedIn }
     },
-  },
-};
+    methods: {
+      async logoutUser() {
+        this.$store
+          .dispatch("logoutUser")
+          .then(() => this.$router.push("/login"))
+          .catch((err) => console.log(err));
+      },
+    },
+  };
 </script>
 
 <style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s;
+  }
 
-.fade-enter,
-.fade-leave-active {
-  opacity: 0;
-}
+  .fade-enter,
+  .fade-leave-active {
+    opacity: 0;
+  }
 
-.center {
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin-left: auto;
-  margin-right: auto;
+  .center {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
 
-  background-color: #ffffff !important;
-}
+    background-color: #ffffff !important;
+  }
 
-.navbar.navbar-dark.bg-dark {
-  background-color: #66809b !important;
-}
+  .navbar.navbar-dark.bg-dark {
+    background-color: #66809b !important;
+  }
 
-.navbar-dark .navbar-nav .nav-link {
-  color: #ffffff;
-  border-radius: 8px;
-}
+  .navbar-dark .navbar-nav .nav-link {
+    color: #ffffff;
+    border-radius: 8px;
+  }
 </style>

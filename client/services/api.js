@@ -111,6 +111,10 @@ export default {
       null
     );
   },
+  postInviteNewUser(newUser) {
+    console.log(newUser, " postInviteNewUser");
+    return this.execute("post", "/invitemember", newUser, null, null)
+  },
   addMinutes(date, minutes) {
     return new Date(date.getTime() + minutes * 60000);
   },

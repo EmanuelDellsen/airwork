@@ -60,6 +60,16 @@ export default new Vuex.Store({
         })
 
     },
+    inviteNewUser(newUser) {
+
+      api.inviteNewUser(newUser).then(res => {
+        console.log(res, "res in store after invite")
+
+      })
+        .catch(err => {
+          console.log(err, "err in inviteNewUser store");
+        })
+    },
     logoutUser({
       commit
     }) {
@@ -87,6 +97,7 @@ export default new Vuex.Store({
 
 
   },
+
 
 
   mutations: {
@@ -183,8 +194,8 @@ export default new Vuex.Store({
             reject(err);
           });
       });
-    }, 
-    
+    },
+
     logout({ commit }) {
       return new Promise((resolve, reject) => {
         commit('logout');
