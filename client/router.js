@@ -7,6 +7,8 @@ import Profile from './views/Profile'
 import EditUserProfile from './views/EditUserProfile'
 import Applications from './views/Applications'
 //import LoggedOut from './views/LoggedOut'
+import InviteMember from './views/InviteMember'
+
 import store from './store.js'
 
 
@@ -16,47 +18,55 @@ const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [{
-      path: '/login',
-      name: 'Login',
-      component: Login
-    },
-    {
-      path: '/home',
-      name: 'Home',
-      component: Home,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/register',
-      name: 'Register',
-      component: Register
-    },
-    {
-      path: '/profile',
-      name: 'Profile',
-      component: Profile,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/applications',
-      name: 'Applications',
-      component: Applications,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/edituserprofile',
-      name: 'EditUserProfile',
-      component: EditUserProfile,
-      meta: {
-        requiresAuth: true
-      }
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: Home,
+    meta: {
+      requiresAuth: true
     }
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/applications',
+    name: 'Applications',
+    component: Applications,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/edituserprofile',
+    name: 'EditUserProfile',
+    component: EditUserProfile,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/invitemember',
+    name: 'InviteMember',
+    component: InviteMember,
+    meta: {
+      requiresAuth: true
+    }
+  }
   ]
 });
 

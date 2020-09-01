@@ -4,6 +4,9 @@ const nameOfRoute = "user";
 const express = require("express");
 const Model = require(`../models/${nameOfRoute}Model`);
 const app = express();
+const mailer = require("./mailerRoute");
+const inviteMemberEmailOptions = mailer.inviteMemberEmailOptions;
+const newEmail = mailer.newEmail;
 
 // get all
 app.get(`/${nameOfRoute}`, async (req, res) => {
@@ -61,13 +64,28 @@ app.get(`/${nameOfRoute}/:id`, async (req, res) => {
 //post one
 app.post(`/${nameOfRoute}`, async (req, res) => {
   //creates new object
-  const new_object = new Model(req.body);
+  console.log(req.body, "req.body user post")
+  const new_object = new Model(req.body.newUser);
   try {
     //saves new object to db
     await new_object.save();
+
+    console.log(new_object)
+    let mongodbId = new_object._id.toString()
+    let emailOptions = inviteMemberEmailOptions(
+      "AirWork",
+      new_object.email,
+      "You have been invite to AirWork",
+      "welcomeToAirWorkEmail",
+      req.body.loggedInUser.name,
+      mongodbId
+
+    );
+    newEmail(emailOptions);
     //returns new object
     res.send(new_object);
   } catch (err) {
+    console.log(err, "err in post user")
     //if error, return 500
     res.status(500).send(err);
   }
@@ -80,8 +98,8 @@ app.patch(`/${nameOfRoute}/:id`, async (req, res) => {
   Model.findByIdAndUpdate(
     req.params.id,
     req.body, {
-      new: true,
-    },
+    new: true,
+  },
     function (err, doc) {
       //check if errors occurs
       if (err) {
@@ -100,5 +118,7 @@ app.patch(`/${nameOfRoute}/:id`, async (req, res) => {
     }
   );
 });
+
+
 
 module.exports = app;

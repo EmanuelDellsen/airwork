@@ -2,7 +2,7 @@ const express = require("express");
 const Model = require("../models/WorkOpportunityModel");
 const app = express();
 const mailer = require("./mailerRoute");
-const mailOptionsNewEmail = mailer.mailOptionsNewEmail;
+const newApplicantEmailOptions = mailer.newApplicantEmailOptions;
 const newEmail = mailer.newEmail;
 
 //get all
@@ -86,8 +86,8 @@ app.patch("/workopportunity/:id", async (req, res) => {
   Model.findByIdAndUpdate(
     req.params.id,
     req.body, {
-      new: true,
-    },
+    new: true,
+  },
     function (err, doc) {
       //check if errors occurs
       if (err) {
@@ -104,7 +104,7 @@ app.patch("/workopportunity/:id", async (req, res) => {
           console.log(doc);
           //here we should maybe use the emailing service to send an email with the patch information to the owner of the document?
           if (Object.keys(jsonreq)[0] === '$addToSet') {
-            let emailOptions = mailOptionsNewEmail(
+            let emailOptions = newApplicantEmailOptions(
               "AirWork",
               doc.creator.email,
               "Someone new is interested..",

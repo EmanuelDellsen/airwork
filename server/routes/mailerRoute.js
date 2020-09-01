@@ -27,7 +27,7 @@ const handlebarOptions = {
 transporter.use("compile", hbs(handlebarOptions));
 
 module.exports = {
-  mailOptionsNewEmail: function(
+  newApplicantEmailOptions: function (
     sender,
     receiver,
     subject,
@@ -49,8 +49,28 @@ module.exports = {
     };
     return emailOptions;
   },
+  inviteMemberEmailOptions: function (
+    sender,
+    receiver,
+    subject,
+    template,
+    userThatInvited,
+    mongodbId
+  ) {
+    const emailOptions = {
+      from: sender,
+      to: receiver,
+      subject: subject,
+      template: template,
+      context: {
+        userThatInvited: userThatInvited,
+        linkToRegistration: "http://localhost:8080/register?id=" + mongodbId
+      },
+    };
+    return emailOptions;
+  },
 
-  newEmail: function(emailOptions) {
+  newEmail: function (emailOptions) {
     transporter.sendMail(emailOptions, (error, response) => {
       if (error) {
         console.log(error);

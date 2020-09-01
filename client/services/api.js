@@ -111,9 +111,14 @@ export default {
       null
     );
   },
-  postInviteNewUser(newUser) {
+  inviteNewUserToAirWork(newUser, loggedInUser) {
     console.log(newUser, " postInviteNewUser");
-    return this.execute("post", "/invitemember", newUser, null, null)
+    let newAndLoggedInUser = {
+      newUser: newUser,
+      loggedInUser: loggedInUser
+    }
+    console.log(newAndLoggedInUser, "new and logged in user")
+    return this.execute("post", "/user", newAndLoggedInUser, null, null)
   },
   addMinutes(date, minutes) {
     return new Date(date.getTime() + minutes * 60000);

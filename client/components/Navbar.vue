@@ -22,6 +22,9 @@
         <li class="nav-item" v-if="isUserLoggedIn" @click="logoutUser()">
           <router-link to="/login" class="nav-link">Logout</router-link>
         </li>
+        <li class="nav-item" v-if="isUserLoggedIn">
+          <router-link to="/invitemember" class="nav-link">Invite</router-link>
+        </li>
       </ul>
     </nav>
     <br />

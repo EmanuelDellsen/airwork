@@ -5,7 +5,7 @@
                 <label for="email">Email</label>
                 <input id="email" type="text" placeholder="Email" name="email" v-model="email" class="form-control" />
             </div>
-            <button type="invite" class="btn btn-secondary">Invite</button>
+            <button type="submit" class="btn btn-secondary">Invite</button>
 
         </form>
 
@@ -13,6 +13,7 @@
 </template>
 
 <script>
+    import api from "../services/api";
 
     export default {
         data() {
@@ -20,15 +21,28 @@
                 email: ''
             };
         },
+        computed: {
+            user: {
+                get() {
+                    return this.$store.state.user;
+                },
+            },
+        },
         methods: {
             async inviteNewUser() {
+                console.log("inside invitenewuser invitemember.vue")
                 let newUser = {
                     email: this.email
                 };
-                this.$store
-                    .dispatch('inviteNewUser', newUser)
-                    .then(console.log("successfully invited user ", newUser))
-                    .catch(err => console.log(err));
+                console.log(newUser)
+                api.inviteNewUserToAirWork(newUser, this.user).then(res => {
+                    console.log(res, "res in store after invite")
+
+                })
+                    .catch(err => {
+                        console.log(err, "err in inviteNewUser store");
+                    })
+
             }
         }
     };

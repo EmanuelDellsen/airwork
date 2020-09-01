@@ -60,16 +60,6 @@ export default new Vuex.Store({
         })
 
     },
-    inviteNewUser(newUser) {
-
-      api.inviteNewUser(newUser).then(res => {
-        console.log(res, "res in store after invite")
-
-      })
-        .catch(err => {
-          console.log(err, "err in inviteNewUser store");
-        })
-    },
     logoutUser({
       commit
     }) {
