@@ -10,6 +10,7 @@ import * as VueGoogleMaps from "vue2-google-maps"
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
+
 import VueAxios from 'vue-axios'
 import VueAuthenticate from 'vue-authenticate'
 import axios from 'axios';

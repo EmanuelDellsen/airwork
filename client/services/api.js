@@ -120,6 +120,18 @@ export default {
     console.log(newAndLoggedInUser, "new and logged in user")
     return this.execute("post", "/user", newAndLoggedInUser, null, null)
   },
+  checkIfUserExists(userId) {
+    return this.execute("get", `/user/${userId}`, null, null)
+  },
+  createUser(user) {
+    console.log(user)
+    let params = {
+      newUser: user
+    }
+
+    return this.execute("post", "/user", params, null)
+  },
+
   addMinutes(date, minutes) {
     return new Date(date.getTime() + minutes * 60000);
   },

@@ -98,8 +98,8 @@ app.patch(`/${nameOfRoute}/:id`, async (req, res) => {
   Model.findByIdAndUpdate(
     req.params.id,
     req.body, {
-    new: true,
-  },
+      new: true,
+    },
     function (err, doc) {
       //check if errors occurs
       if (err) {

@@ -1,24 +1,29 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import Vue from "vue";
+import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
 
 import api from "./services/api";
 
-Vue.use(Vuex)
-
+Vue.use(Vuex);
 
 export default new Vuex.Store({
+  plugins: [
+    createPersistedState({
+      storage: window.sessionStorage,
+    }),
+  ],
   state: {
-    access_token: localStorage.getItem('token') || '',
+    access_token: localStorage.getItem("token") || "",
     user: {},
-    status: '',
+    status: "",
   },
 
   getters: {
-    isUserLoggedIn: state => !!state.access_token,
-    authStatus: state => state.status,
-    getUser: function (state) {
+    isUserLoggedIn: (state) => !!state.access_token,
+    authStatus: (state) => state.status,
+    getUser: function(state) {
       if (state.user != {}) {
-        console.log(state.user)
+        console.log(state.user);
 
         return state.user;
       } else {
@@ -26,98 +31,85 @@ export default new Vuex.Store({
       }
     },
 
-    authorizedState: state => state.status,
-    user: state => state.user,
-    access_token: state => state.token
+    authorizedState: (state) => state.status,
+    user: (state) => state.user,
+    access_token: (state) => state.token,
   },
 
   actions: {
-    authenticateUser({
-      commit
-    }, provider) {
-      commit('auth_request');
+    authenticateUser({ commit }, provider) {
+      commit("auth_request");
       console.log(provider, "store");
-      let user = {}
-      this.$auth.authenticate(provider)
-        .then(res => {
-          console.log(res, "inside authenticate promise")
+      let user = {};
+      this.$auth
+        .authenticate(provider)
+        .then((res) => {
+          console.log(res, "inside authenticate promise");
           const token = res.data.access_token;
-          localStorage.setItem('token', token);
-          api.getUserInfo(token).then(res => {
-            console.log(res, "inside getuserinfo promise")
-            user = res;
-          }).catch(err => {
-            console.log(err, "error from getuserinfo")
-          });
-          commit('auth_success', {
+          localStorage.setItem("token", token);
+          api
+            .getUserInfo(token)
+            .then((res) => {
+              console.log(res, "inside getuserinfo promise");
+              user = res;
+            })
+            .catch((err) => {
+              console.log(err, "error from getuserinfo");
+            });
+          commit("auth_success", {
             token,
-            user
+            user,
           });
-        }).catch(err => {
-          console.log(err, "error from authenticate")
-          commit('auth_error', err);
-          localStorage.removeItem('token');
         })
-
+        .catch((err) => {
+          console.log(err, "error from authenticate");
+          commit("auth_error", err);
+          localStorage.removeItem("token");
+        });
     },
-    logoutUser({
-      commit
-    }) {
-
-      commit('logout');
-      localStorage.removeItem('token');
-
+    logoutUser({ commit }) {
+      commit("logout");
+      localStorage.removeItem("token");
+      sessionStorage.clear();
     },
-    setUser: ({
-      commit,
-      state
-    }, user) => {
-      commit("SET_USER", user)
+    setUser: ({ commit, state }, user) => {
+      commit("SET_USER", user);
       return state.user;
     },
-    setAuthSuccess: ({
-      commit,
-      state
-    }, token) => {
+    setAuthSuccess: ({ commit, state }, token) => {
       commit("SET_AUTH_SUCCESS", token);
-      localStorage.setItem('token', token);
+      localStorage.setItem("token", token);
 
       return state.token;
-    }
-
-
+    },
   },
-
-
 
   mutations: {
     SET_USER: (state, user) => {
       state.user = user;
     },
     auth_request(state) {
-      state.status = 'loading';
+      state.status = "loading";
     },
     SET_AUTH_SUCCESS(state, token) {
-      console.log(token, "inside auth success")
+      console.log(token, "inside auth success");
 
-      state.status = 'success';
+      state.status = "success";
       state.access_token = token;
     },
     auth_error(state) {
-      state.status = 'error';
-      state.toast = 'error';
+      state.status = "error";
+      state.toast = "error";
     },
     logout(state) {
-      state.access_token = '';
-      state.status = '';
-      state.user = {}
-      console.log(state.access_token)
-      console.log(state.status)
-      console.log(state.user)
-
-
-    }
-  }
+      state.access_token = "";
+      state.status = "";
+      state.user = {};
+      console.log(state.access_token);
+      console.log(state.status);
+      console.log(state.user);
+    },
+  },
 });
 
 /*login({ commit }, user) {
