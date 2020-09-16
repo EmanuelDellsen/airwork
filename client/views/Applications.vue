@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-if="this.myWorkOpportunities.length===0">
+      <h4> No applications</h4>
+    </div>
     <div id="myWorkOpportunities" :key="key" v-for="(item, key) in myWorkOpportunities">
       <h3 class="application-title">
         {{ item.title }}
@@ -43,12 +46,19 @@
     },
     methods: {
       refreshWorkopportunities: async function () {
-        this.alldata = await api.getAllWorkopportunityWhereUserIsApplicant(
-          this.user.id
-        );
+
+        api.getAllWorkopportunityWhereUserIsApplicant(this.user.id).then((value) => {
+          console.log(value, "all applications")
+          this.alldata = value;
+          this.parseDataToJSONObject(this.alldata);
+        }).catch((error) => {
+          if (error.response.status === 404) {
+            console.log(error, "error")
+          }
+        })
+
         /*eslint-disable*/
-        console.log(this.alldata, "here is the problem");
-        this.parseDataToJSONObject(this.alldata);
+
       },
       parseDataToJSONObject: function (dataList) {
         for (let i = 0; i < dataList.length; i++) {

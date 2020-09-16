@@ -95,16 +95,18 @@ app.post(`/${nameOfRoute}`, async (req, res) => {
 app.patch(`/${nameOfRoute}/:id`, async (req, res) => {
   //searches for document by id and updates directly in db if found
   //option: ' {new: true} ' returns the updated document as the payload
+  console.log(req, "req in userroute")
   Model.findByIdAndUpdate(
     req.params.id,
-    req.body, {
-      new: true,
-    },
+    req.body.newUser, {
+    new: true,
+  },
     function (err, doc) {
       //check if errors occurs
       if (err) {
         //if error, return 500
         res.status(500).send(err);
+        console.log(err, "err in user patch")
       } else {
         //check if payload has content
         if (doc.length == 0) {
@@ -113,6 +115,7 @@ app.patch(`/${nameOfRoute}/:id`, async (req, res) => {
         } else {
           //if document is found and updated, return document
           res.send(doc);
+          console.log(doc, "in user patch")
         }
       }
     }

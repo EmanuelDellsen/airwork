@@ -123,13 +123,20 @@ export default {
   checkIfUserExists(userId) {
     return this.execute("get", `/user/${userId}`, null, null)
   },
-  createUser(user) {
+  registerUserWithPatch(user, id) {
     console.log(user)
     let params = {
       newUser: user
     }
 
-    return this.execute("post", "/user", params, null)
+    return this.execute("patch", `/user/${id}`, params, null)
+  },
+  updateUser(user, id) {
+    console.log(user, id, "user and id update");
+    let params = {
+      newUser: user
+    }
+    return this.execute("patch", `/user/${id}`, params, null)
   },
 
   addMinutes(date, minutes) {

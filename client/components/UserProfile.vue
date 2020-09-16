@@ -14,6 +14,7 @@
             <div>
                 {{user.email}}
             </div>
+
         </div>
     </div>
 
