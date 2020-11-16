@@ -21,7 +21,7 @@ export default new Vuex.Store({
   getters: {
     isUserLoggedIn: (state) => !!state.access_token,
     authStatus: (state) => state.status,
-    getUser: function(state) {
+    getUser: function (state) {
       if (state.user != {}) {
         console.log(state.user);
 
@@ -66,6 +66,22 @@ export default new Vuex.Store({
           commit("auth_error", err);
           localStorage.removeItem("token");
         });
+    },
+    loginUser({ commit }, user) {
+      return new Promise((resolve, reject) => {
+        commit('auth_request');
+        api.loginUser(user).then(res => {
+          console.log(res.data);
+          const user = res.data.user;
+          commit("auth_success", {
+            user
+          })
+          resolve(res)
+        }).catch(err => {
+          commit("auth_error", err);
+          reject(err)
+        })
+      })
     },
     logoutUser({ commit }) {
       commit("logout");

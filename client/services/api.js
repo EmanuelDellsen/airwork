@@ -142,4 +142,12 @@ export default {
   addMinutes(date, minutes) {
     return new Date(date.getTime() + minutes * 60000);
   },
+
+  loginUser(user) {
+    console.log(user, "api.js")
+    let params = {
+      newUser: user
+    }
+    return this.execute("post", "/auth/user", params, null, null)
+  }
 };
